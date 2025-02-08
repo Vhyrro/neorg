@@ -175,8 +175,6 @@ module.public = {
 
         module.required["core.dirman"].create_file(folder_name .. config.pathsep .. path, workspace)
 
-        module.required["core.dirman"].create_file(folder_name .. config.pathsep .. path, workspace)
-
         if
             not journal_file_exists
             and module.config.public.use_template
