@@ -549,9 +549,10 @@ module.public = {
                 return
             end
             local row_start_0b, col_start_0b, row_end_0bin, col_end_0bex = node:range()
+            local chop = config.chop and 1 or 0
             for i = row_start_0b, row_end_0bin do
-                local l = i == row_start_0b and col_start_0b + 1 or 0
-                local r_ex = i == row_end_0bin and col_end_0bex - 1 or get_line_length(bufid, i)
+                local l = i == row_start_0b and col_start_0b + chop or 0
+                local r_ex = i == row_end_0bin and col_end_0bex - chop or get_line_length(bufid, i)
                 set_mark(bufid, i, l, config.icon:rep(r_ex - l), config.highlight)
             end
         end,
@@ -568,6 +569,20 @@ module.public = {
                 or vim.api.nvim_win_get_width(assert(vim.fn.bufwinid(bufid)))
             local len = math.max(col_end_0bex - col_start_0b, render_col_end_0bex - render_col_start_0b)
             set_mark(bufid, row_start_0b, render_col_start_0b, config.icon:rep(len), config.highlight)
+        end,
+
+        carryover_dispatcher = function(config, bufid, node)
+            local tag_name = vim.treesitter.get_node_text(node:named_child(0), bufid)
+            assert(tag_name:sub(1,1) == "#")
+
+            local tag_handler = config.tag_types[tag_name:sub(2)]
+            if tag_handler then
+                tag_handler.renderer(tag_handler, bufid, node)
+            end
+        end,
+
+        carryover_comment = function(config, bufid, node)
+            module.public.icon_renderers.fill_multiline_chop2(config, bufid, node:parent())
         end,
 
         render_code_block = function(config, bufid, node)
@@ -889,6 +904,27 @@ module.config.public = {
                 highlight = "@neorg.markup.spoiler",
                 nodes = { "spoiler" },
                 render = module.public.icon_renderers.fill_multiline_chop2,
+                chop = true,
+            },
+
+            inline_comment = {
+                render = module.public.icon_renderers.fill_multiline_chop2,
+                nodes = { "inline_comment" },
+                icon = " ",
+                chop = true,
+            },
+        },
+
+        carryover = {
+            render = module.public.icon_renderers.carryover_dispatcher,
+            nodes = { "strong_carryover_set" },
+
+            tag_types = {
+                comment = {
+                    icon = " ",
+                    renderer = module.public.icon_renderers.carryover_comment,
+                    chop = false,
+                },
             },
         },
 
@@ -1070,9 +1106,11 @@ local function get_parsed_query_lazy()
     local keys = { "config", "icons" }
     local function traverse_config(config, f)
         if config == false then
+            -- disabled config
             return
         end
         if config.nodes then
+            -- leaf config
             f(config)
             return
         end
