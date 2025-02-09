@@ -1,5 +1,15 @@
 # Changelog
 
+## [9.2.1](https://github.com/nvim-neorg/neorg/compare/v9.2.0...v9.2.1) (2025-02-09)
+
+
+### Bug Fixes
+
+* expand tangle paths ([#1622](https://github.com/nvim-neorg/neorg/issues/1622)) ([10bf607](https://github.com/nvim-neorg/neorg/commit/10bf607f11ed94151fb5496e6127d8823d162a7e))
+* Tangle should close fd for files ([#1618](https://github.com/nvim-neorg/neorg/issues/1618)) ([cd3056e](https://github.com/nvim-neorg/neorg/commit/cd3056eaf39a838b0a26438ff203bb3123c94aec))
+* **tangle:** create missing dirs ([#1644](https://github.com/nvim-neorg/neorg/issues/1644)) ([e1b4bb4](https://github.com/nvim-neorg/neorg/commit/e1b4bb4ff144a953f802f665afdd9a7f7532014f))
+* **tangle:** proper error handling for fs_close ([#1647](https://github.com/nvim-neorg/neorg/issues/1647)) ([1a4c20a](https://github.com/nvim-neorg/neorg/commit/1a4c20a5ed3dea4abae20e85d66b5f0f94c96f5b))
+
 ## [9.2.0](https://github.com/nvim-neorg/neorg/compare/v9.1.1...v9.2.0) (2025-01-22)
 
 
