@@ -336,10 +336,15 @@ module.config.public = {
 
 module.load = function()
     module.required["core.autocommands"].enable_autocommand("BufEnter")
+    module.required["core.autocommands"].enable_autocommand("InsertLeave")
 end
 
 module.on_event = function(event)
-    if event.type == "core.autocommands.events.bufenter" and event.content.norg then
+    if not event.content.norg then
+        return
+    end
+
+    if event.type == "core.autocommands.events.bufenter" then
         vim.api.nvim_buf_set_option(
             event.buffer,
             "indentexpr",
@@ -348,14 +353,30 @@ module.on_event = function(event)
 
         local indentkeys = "o,O,*<M-o>,*<M-O>"
             .. lib.when(module.config.public.format_on_enter, ",*<CR>", "")
-            .. lib.when(module.config.public.format_on_escape, ",*<Esc>", "")
         vim.api.nvim_buf_set_option(event.buffer, "indentkeys", indentkeys)
+    elseif event.type == "core.autocommands.events.insertleave" then
+        if module.config.public.format_on_escape then
+            vim.api.nvim_buf_call(event.buffer, function()
+                if event.line_content == "" then
+                    return
+                end
+
+                local lineno_1b = event.cursor_position[1]
+                local old_indent = vim.fn.indent(lineno_1b)
+                local new_indent = module.public.indentexpr(0, lineno_1b - 1)
+                if old_indent ~= new_indent then
+                    vim.bo.undolevels = vim.bo.undolevels
+                    vim.api.nvim_buf_set_text(0, lineno_1b-1, 0, lineno_1b-1, old_indent, { (" "):rep(new_indent) })
+                end
+            end)
+        end
     end
 end
 
 module.events.subscribed = {
     ["core.autocommands"] = {
         bufenter = true,
+        insertleave = true,
     },
 }
 

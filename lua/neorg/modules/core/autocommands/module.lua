@@ -68,11 +68,12 @@ module.public = {
         autocmd = autocmd:lower()
         local subscribed_autocommand = module.events.subscribed["core.autocommands"][autocmd]
 
-        if subscribed_autocommand ~= nil then
-            vim.cmd("augroup Neorg")
+        local group = vim.api.nvim_create_augroup("Neorg", { clear = false })
 
+        if subscribed_autocommand ~= nil then
             if dont_isolate and vim.fn.exists("#Neorg#" .. autocmd .. "#*") == 0 then
                 vim.api.nvim_create_autocmd(autocmd, {
+                    group = group,
                     callback = function(ev)
                         _neorg_module_autocommand_triggered("core.autocommands.events." .. autocmd, false, ev)
                     end,
@@ -80,12 +81,12 @@ module.public = {
             elseif vim.fn.exists("#Neorg#" .. autocmd .. "#*.norg") == 0 then
                 vim.api.nvim_create_autocmd(autocmd, {
                     pattern = "*.norg",
+                    group = group,
                     callback = function(ev)
                         _neorg_module_autocommand_triggered("core.autocommands.events." .. autocmd, true, ev)
                     end,
                 })
             end
-            vim.cmd("augroup END")
             module.events.subscribed["core.autocommands"][autocmd] = true
         end
     end,
