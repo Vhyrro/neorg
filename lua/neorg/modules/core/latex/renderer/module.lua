@@ -299,10 +299,6 @@ module.public = {
             return
         end
         local res = create_dvi.result()
-        if res ~= 0 then
-            return
-        end
-
         local png_result = nio.fn.tempname()
         png_result = ("%s.png"):format(png_result)
 
@@ -322,7 +318,6 @@ module.public = {
                 document_name .. ".dvi",
             },
         })
-
         if not dvipng or type(dvipng) == "string" then
             return
         end
