@@ -1,0 +1,21 @@
+
+* `core.dirman.utils`
+
+  *** 
+
+* Overview
+
+  This internal submodule implements some basic utility functions for {:Dirman:}[`core.dirman`].
+  Currently the only exposed API function is `expand_path`, which takes a path like `$name/my/location` and
+  converts `$name` into the full path of the workspace called `name`. 
+
+* Configuration
+
+  This module provides no configuration options! 
+
+* Required By
+
+  - {:Completion:}[`core.completion`] - A wrapper to interface with several different completion engines. 
+  - {:Dirman:}[`core.dirman`] - This module is be responsible for managing directories full of .norg files. 
+  - {:Esupports-Hop:}[`core.esupports.hop`] - "Hop" between Neorg links, following them with a single keypress. 
+

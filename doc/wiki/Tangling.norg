@@ -1,0 +1,212 @@
+
+* `core.tangle`
+
+*** From Code Blocks to Files
+
+    The `core.tangle` module exports code blocks within a `.norg` file straight to a file of your choice. 
+
+* Overview
+
+  The goal of this module is to allow users to spit out the contents of code blocks into
+  many different files. This is the primary component required for a literate configuration in Neorg,
+  where the configuration is annotated and described in a `.norg` document, and the actual code itself
+  is thrown out into a file that can then be normally consumed by e.g. an application. 
+
+  The `tangle` module currently provides a single command:
+  - `:Neorg tangle current-file` - performs all possible tangling operations on the current file 
+
+*** Usage Tutorial
+
+    By default, /zero/ code blocks are tangled. You must provide where you’d like to tangle each code
+    block manually (global configuration will be discussed later). To do so, add a `#tangle <output-file>` tag above the code block you’d wish to export, where  is relative to the
+    current file. For example: 
+
+    |example
+    #tangle init.lua
+    @code lua
+    print("Hello World!")
+    @end
+    |end
+
+    The above snippet will /only/ tangle that single code block to the desired output file: `init.lua`. 
+
+**** Global Tangling for Single Files
+
+     Apart from tangling a single or a set of code blocks, you can declare a global output file in the document’s metadata: 
+
+     |example
+     @document.meta
+     tangle: ./init.lua
+     @end
+     |end
+
+     This will tangle all `lua` code blocks to `init.lua`, /unless/ the code block has an explicit `#tangle` tag associated with it, in which case
+     the `#tangle` tag takes precedence. 
+
+**** Global Tangling for Multiple Files
+
+     Apart from a single filepath, you can provide many in an array: 
+
+     |example
+     @document.meta
+     tangle: [
+     ./init.lua
+     ./output.hs
+     ]
+     @end
+     |end
+
+     The above snippet tells the Neorg tangling engine to tangle all `lua` code blocks to `./init.lua` and all `haskell` code blocks to `./output.hs`.
+     As always if any of the code blocks have a `#tangle` tag then that takes precedence. 
+
+**** Ignoring Code Blocks
+
+     Sometimes when tangling you may want to omit some code blocks. For this you may use the `#tangle.none` tag: 
+
+     |example
+     #tangle.none
+     @code lua
+     print("I won't be tangled!")
+     @end
+     |end
+
+**** Global Tangling with Extra Options
+
+     But wait, it doesn’t stop there! You can supply a string to `tangle`, an array to `tangle`, but also an object!
+     It looks like this: 
+
+     |example
+     @document.meta
+     tangle: {
+     languages: {
+     lua: ./output.lua
+     haskell: my-haskell-file
+     }
+         delimiter: heading
+         scope: all
+     }
+     @end
+     |end
+
+     The `language` option determines which filetype should go into which file.
+     It’s a simple language-filepath mapping, but it’s especially useful when the output file’s language type cannot be inferred from the name or shebang.
+     It is also possible to use the name `_` as a catchall to direct output for all files not otherwise listed. 
+
+     The `delimiter` option determines how to delimit code blocks that export to the same file.
+     The following variations are allowed: 
+
+     - `heading` – Try to determine the filetype of the code block and insert any headings from the original document as a comment in the tangled output.
+       If filetype detection fails, `newline` will be used instead. 
+     - `file-content` – Try to determine the filetype of the codeblock and insert the Neorg file content as a delimiter.
+       If filetype detection fails, `none` will be used instead. 
+     - `newline` – Use an extra newline between tangled blocks. 
+     - `none` – Do not add any delimiter. This implies that the code blocks are inserted into the tangle target as-is. 
+
+     The `scope` option is discussed below. 
+
+**** Tangling Scopes
+
+     What you’ve seen so far is the tangler operating in `all` mode. This means it captures all code blocks of a certain type unless that code block is tagged
+     with `#tangle.none`. There are two other types: `tagged` and `main`. 
+
+***** The `tagged` Scope
+
+      When in this mode, the tangler will only tangle code blocks that have been `tagged` with a `#tangle` tag.
+      Note that you don’t have to always provide a filetype, and that: 
+
+      |example
+      #tangle
+      @code lua
+      @end
+      |end
+
+      Will use the global output file for that language as defined in the metadata. I.e., if I do: 
+
+      |example
+      @document.meta
+      tangle: {
+      languages: {
+      lua: ./output.lua
+      }
+      scope: tagged
+      }
+      @end
+
+      @code lua
+      print("Hello")
+      @end
+
+      #tangle
+      @code lua
+      print("Sup")
+      @end
+
+      #tangle other-file.lua
+      @code lua
+      print("Ayo")
+      @end
+      |end
+
+      The first code block will not be touched, the second code block will be tangled to `./output.lua` and the third code block will be tangled to `other-file.lua`. You
+      can probably see that this system can get expressive pretty quick. 
+
+***** The `main` scope
+
+      This mode is the opposite of the `tagged` one in that it will only tangle code blocks to files that are defined in the document metadata. I.e. in this case: 
+
+      |example
+      @document.meta
+      tangle: {
+          languages: {
+              lua: ./output.lua
+          }
+          scope: main
+      }
+      @end
+
+      @code lua
+      print("Hello")
+      @end
+
+      #tangle
+      @code lua
+      print("Sup")
+      @end
+
+      #tangle other-file.lua
+      @code lua
+      print("Ayo")
+      @end
+      |end
+
+      The first code block will be tangled to `./output.lua`, the second code block will also be tangled to `./output.lua` and the third code block will be ignored. 
+
+* Configuration
+
+** indent_errors (string)
+   When text in a code block is less indented than the block itself, Neorg will not tangle that
+   block to a file. Instead it can either print or vim.notify error. By default, vim.notify is
+   loud and is more likely to create a press enter message. 
+
+   - "notify" - Throw a normal looking error 
+   - "print" - print the error 
+
+   default: `"notify"` 
+
+** report_on_empty (boolean)
+
+   Notify when there is nothing to tangle (INFO) or when the content is empty (WARN). 
+
+   default: `true` 
+
+** tangle_on_write (boolean)
+
+   Tangle all code blocks in the current norg file on file write. 
+
+   default: `false` 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+  - {:Neorgcmd-Module:}[`core.neorgcmd`] - This module deals with handling everything related to the `:Neorg` command. 
+

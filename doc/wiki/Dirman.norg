@@ -1,0 +1,111 @@
+
+* `core.dirman`
+
+*** The Most Critical Component of any Organized Workflow
+
+    The `dirman` module handles different collections of notes in separate directories. 
+
+* Overview
+
+  `core.dirman` provides other modules the ability to see which directories the user is in, where
+  each note collection is stored and how to interact with it. 
+
+  When writing notes, it is often crucial to have notes on a certain topic be isolated from notes on another topic.
+  Dirman achieves this with a concept of "workspaces", which are named directories full of `.norg` notes. 
+
+  To use `core.dirman`, simply load up the module in your configuration and specify the directories you would like to be managed for you: 
+
+  @code lua
+  require('neorg').setup {
+      load = {
+          ["core.defaults"] = {},
+          ["core.dirman"] = {
+              config = {
+                  workspaces = {
+                      my_ws = "~/neorg", -- Format: <name_of_workspace> = <path_to_workspace_root>
+                      my_other_notes = "~/work/notes",
+                  },
+                  index = "index.norg", -- The name of the main (root) .norg file
+              }
+          }
+      }
+  }
+  @end
+
+  To query the current workspace, run `:Neorg workspace`. To set the workspace, run `:Neorg workspace <workspace_name>`. 
+
+*** Changing the Current Working Directory
+
+    After a recent update `core.dirman` will no longer change the current working directory after switching
+    workspace. To get the best experience it’s recommended to set the `autochdir` Neovim option. 
+
+*** Create a new note
+
+    You can use dirman to create new notes in your workspaces. 
+
+    @code lua
+    local dirman = require('neorg').modules.get_module("core.dirman")
+    dirman.create_file("my_file", "my_ws", {
+        no_open  = false,  -- open file after creation?
+        force    = false,  -- overwrite file if exists
+        metadata = {}      -- key-value table for metadata fields
+    })
+    @end
+
+* Configuration
+
+** default_workspace (nil)
+
+   The default workspace to set whenever Neovim starts. 
+
+   default: `nil` 
+
+** index (string)
+
+   The name for the index file. 
+
+   The index file is the "entry point" for all of your notes. 
+
+   default: `"index.norg"` 
+
+** open_last_workspace (boolean)
+
+   Whether to open the last workspace’s index file when `nvim` is executed
+   without arguments. 
+
+   May also be set to the string `"default"`, due to which Neorg will always
+   open up the index file for the workspace defined in `default_workspace`. 
+
+   default: `false` 
+
+** use_popup (boolean)
+
+   Whether to use core.ui.text_popup for `dirman.new.note` event.
+   if `false`, will use vim’s default `vim.ui.input` instead. 
+
+   default: `true` 
+
+** workspaces (table)
+
+   The list of active Neorg workspaces. 
+
+   There is always an inbuilt workspace called `default`, whose location is
+   set to the Neovim current working directory on boot.
+   @type [type] table<string, PathlibPath> 
+
+   *** default (table)
+
+   default: `require("pathlib").cwd()` 
+
+   * Dependencies
+
+   - {:Autocommands:}[`core.autocommands`] - Handles the creation and management of Neovim’s autocommands. 
+   - {:Dirman-Utils:}[`core.dirman.utils`] - A set of utilities for the `core.dirman` module. 
+   - {:Storage:}[`core.storage`] - Deals with storing persistent data across Neorg sessions. 
+   - {:Core-UI:}[`core.ui`] - A set of public functions to help developers create and manage UI (selection popups, prompts…) in their modules. 
+
+   * Required By
+
+   - {:Completion:}[`core.completion`] - A wrapper to interface with several different completion engines. 
+   - {:Journal:}[`core.journal`] - Easily track a journal within Neorg. 
+

@@ -1,0 +1,15 @@
+
+* `core.integrations.coq_nvim`
+
+*** Integrating Neorg with `coq_nvim`
+
+* Overview
+
+  This module works with the {:Completion:}[`core.completion`] module to attempt to provide
+  intelligent completions. Note that integrations like this are second-class citizens and may not work in 100%
+  of scenarios. If they don’t then please file a bug report! 
+
+* Configuration
+
+  This module provides no configuration options! 
+

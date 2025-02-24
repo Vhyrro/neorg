@@ -1,0 +1,70 @@
+
+* `core.itero`
+
+*** Fast List/Heading Continuation
+
+    Fluidness is key, after all. 
+
+* Overview
+
+  `core.itero` is a rather small and simple module designed to assist in the creation of many lists,
+  headings and other repeatable (iterable) items. 
+
+  By default, the key that is used to iterate on an item is `<M-CR>` (Alt + Enter). If you want to
+  change the bind, remap the `core.itero.next-iteration` event. 
+
+  Begin by writing an initial item you’d like to iterate (in this instance, and unordered list item): 
+
+  default: `- Hello World!` 
+
+  With your cursor in insert mode at the end of the line, pressing the keybind will continue the item at whatever
+  nesting level it is currently at (where `|||` is the new cursor position): 
+
+  @code md
+  - Hello World!
+  - |
+  @end
+
+  The same can also be done for headings: 
+
+  @code md
+  * Heading 1
+  * |
+  @end
+
+  This functionality is commonly paired with the {:Promo:}[`core.promo`] module to then indent/dedent
+  the item under the cursor with the `<C-t>` and `<C-d>` bindings. 
+
+* Configuration
+
+** iterables (list)
+
+   A list of lua patterns detailing what treesitter nodes can be "iterated".
+   Usually doesn’t need to be changed, unless you want to disable some
+   items from being iterable. 
+
+   - \(string)  default: `"unordered_list%d"` 
+   - \(string)  default: `"ordered_list%d"` 
+   - \(string)  default: `"heading%d"` 
+   - \(string)  default: `"quote%d"` 
+
+** retain_extensions (table)
+
+   Which item types to retain extensions for. 
+
+   If the item you are currently iterating has an extension (e.g. `( )`, `(x)` etc.),
+   then the following items will also have an extension (by default `( )`) attached
+   to them automatically. 
+
+*** ordered_list%d (boolean)
+
+    default: `true` 
+
+*** unordered_list%d (boolean)
+
+    default: `true` 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

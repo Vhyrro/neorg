@@ -1,0 +1,57 @@
+
+* `core.todo-introspector`
+
+*** See Your Progress at a Glance
+
+    The introspector module displays progress for nested tasks. 
+
+* Overview
+
+  When an item with a TODO status has children with their own TODOs this module enables virtual text in the top level item and displays the
+  progress of the subtasks. By default it displays in the format of `[completed/total] (progress%)`. 
+
+* Configuration
+
+** completed_statuses (list)
+
+   Which status should count towards the completed count (should be a subset of counted_statuses). 
+
+   Defaults to the following: `done`. 
+
+   - \(string)  default: `"done"` 
+
+** counted_statuses (list)
+
+   Which status types to count towards the totol. 
+
+   Defaults to the following: `done`, `pending`, `undone`, `urgent`. 
+
+   - \(string)  default: `"done"` 
+   - \(string)  default: `"pending"` 
+   - \(string)  default: `"undone"` 
+   - \(string)  default: `"urgent"` 
+
+** format (function)
+   Callback to format introspector. Takes in two parameters: 
+
+   - `completed`: number of completed tasks 
+   - `total`: number of total counted tasks 
+
+   Should return a string with the format you want to display the introspector in. 
+
+   Defaults to "[completed/total] (progress%)" 
+
+   default: `function(completed, total)` 
+
+** highlight_group (string)
+
+   Highlight group to display introspector in. 
+
+   Defaults to "Normal". 
+
+   default: `"Normal"` 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

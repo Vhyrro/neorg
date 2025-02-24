@@ -1,0 +1,84 @@
+
+* `core.export.markdown`
+
+*** Neorg’s Markdown Exporter
+
+* Overview
+
+  This module exists as an interface for `core.export` to export `.norg` files to Markdown.
+  As a user the only reason you would ever have to touch this module is to configure /how/ you’d
+  like your markdown to be exported (i.e. do you want to support certain extensions during the export).
+  To learn more about configuration, consult the {#configuration}[relevant section]. 
+
+* Configuration
+
+** extension (string)
+
+   Used by the exporter to know what extension to use
+   when creating markdown files.
+   The default is recommended, although you can change it. 
+
+   default: `"md"` 
+
+** extensions (empty list)
+
+   Any extensions you may want to use when exporting to markdown. By
+   default no extensions are loaded (the exporter is commonmark compliant).
+   You can also set this value to `"all"` to enable all extensions.
+   The full extension list is: `todo-items-basic`, `todo-items-pending`, `todo-items-extended`,
+   `definition-lists`, `mathematics`, `metadata` and `latex`. 
+
+** mathematics (table)
+
+   Data about how to render mathematics.
+   The default is recommended as it is the most common, although certain flavours
+   of markdown use different syntax. 
+
+*** block (table)
+
+    Block-level mathematics are represented as such: 
+
+    @code md
+    $$
+    \frac{3, 2}
+    $$
+    @end
+
+**** end (string)
+
+     default: `"$$"` 
+
+**** start (string)
+
+     default: `"$$"` 
+
+*** inline (table)
+
+    Inline mathematics are represented `$like this$`. 
+
+**** end (string)
+
+     default: `"$"` 
+
+**** start (string)
+
+     default: `"$"` 
+
+** metadata (table)
+
+   Data about how to render metadata
+   There are a few ways to render metadata blocks, but this is the most
+   common. 
+
+*** end (string)
+
+    default: `"---"` 
+
+*** start (string)
+
+    default: `"---"` 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

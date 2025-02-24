@@ -1,0 +1,56 @@
+
+* `core.autocommands`
+
+  *** 
+
+  Handles the creation and management of Neovim’s autocommands. 
+
+* Overview
+
+  This internal module exposes functionality for subscribing to autocommands and performing actions based on those autocommands. 
+
+****** NOTE: This module will be soon deprecated, and it’s favourable to use the `vim.api*` functions instead.
+
+       In your `module.setup()`, make sure to require `core.autocommands` (`requires = { "core.autocommands" \}`)
+       Afterwards in a function of your choice that gets called /after/ core.autocommmands gets intialized (e.g. `load()`): 
+
+       @code lua
+       module.load = function()
+           module.required["core.autocommands"].enable_autocommand("VimLeavePre") -- Substitute VimLeavePre for any valid neovim autocommand
+       end
+       @end
+
+       Afterwards, be sure to subscribe to the event: 
+
+       @code lua
+       module.events.subscribed = {
+           ["core.autocommands"] = {
+               vimleavepre = true
+           }
+       }
+       @end
+
+       Upon receiving an event, it will come in this format: 
+
+       @code lua
+       {
+           type = "core.autocommands.events.<name of autocommand, e.g. vimleavepre>",
+           broadcast = true
+       }
+       @end
+
+* Configuration
+
+  This module provides no configuration options! 
+
+* Required By
+
+  - {:Concealer:}[`core.concealer`] - Enhances the basic Neorg experience by using icons instead of text. 
+  - {:Dirman:}[`core.dirman`] - This module is be responsible for managing directories full of .norg files. 
+  - {:Indent:}[`core.esupports.indent`] - A set of instructions for Neovim to indent Neorg documents. 
+  - {:Metagen:}[`core.esupports.metagen`] - A Neorg module for generating document metadata automatically. 
+  - {:Core-Highlights:}[`core.highlights`] - Manages your highlight groups with this module. 
+  - {:Core-Latex-Renderer:}[`core.latex.renderer`] - An experimental module for rendering latex images inline. 
+  - {:Storage:}[`core.storage`] - Deals with storing persistent data across Neorg sessions. 
+  - {:Syntax:}[`core.syntax`] - Handles interaction for syntax files for code blocks. 
+

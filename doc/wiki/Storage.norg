@@ -1,0 +1,21 @@
+
+* `core.storage`
+
+*** Store persistent data and query it easily with `core.storage`
+
+* Configuration
+
+** path (string)
+
+   Full path to store data (saved in mpack data format) 
+
+   default: `vim.fn.stdpath("data") .. "/neorg.mpack"` 
+
+* Dependencies
+
+  - {:Autocommands:}[`core.autocommands`] - Handles the creation and management of Neovim’s autocommands. 
+
+* Required By
+
+  - {:Dirman:}[`core.dirman`] - This module is be responsible for managing directories full of .norg files. 
+

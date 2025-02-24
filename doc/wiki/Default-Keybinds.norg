@@ -1,0 +1,141 @@
+
+* :keyboard: Neorg Keybinds :keyboard:
+
+  A comprehensive list of all keys available in Neorg. 
+
+*** Further Reading
+
+    To find out how to rebind the available keys consult the {:User-Keybinds:}[`core.keybinds`] wiki entry. 
+
+** Preset `neorg` // All Files
+
+*** Normal Mode
+
+**** `<LocalLeader>nn` - create a new `.norg` file to take notes in
+
+     - Maps to: `<Plug>(neorg.dirman.new-note)` 
+     - Mnemonic: new note 
+
+** Preset `neorg` // Norg Only
+
+*** Insert Mode
+
+**** `<C-d>` - demote an object recursively
+
+     - Maps to: `<Plug>(neorg.promo.demote)` 
+
+**** `<C-t>` - promote an object recursively
+
+     - Maps to: `<Plug>(neorg.promo.promote)` 
+
+**** `<M-CR>` - create an iteration of e.g. a list item
+
+     - Maps to: `<Plug>(neorg.itero.next-iteration)` 
+
+**** `<M-d>` - insert a link to a date at the current cursor position
+
+     - Maps to: `<Plug>(neorg.tempus.insert-date.insert-mode)` 
+     - Mnemonic: date 
+
+*** Normal Mode
+
+**** `<,` - demote an object non-recursively
+
+     - Maps to: `<Plug>(neorg.promo.demote)` 
+
+**** `<<` - demote an object recursively
+
+     - Maps to: `<Plug>(neorg.promo.demote.nested)` 
+
+**** `<C-Space>` - switch the task under the cursor between a select few states
+
+     - Maps to: `<Plug>(neorg.qol.todo-items.todo.task-cycle)` 
+
+**** `<CR>` - hop to the destination of the link under the cursor
+
+     - Maps to: `<Plug>(neorg.esupports.hop.hop-link)` 
+
+**** `<LocalLeader>cm` - magnifies a code block to a separate buffer.
+
+     - Maps to: `<Plug>(neorg.looking-glass.magnify-code-block)` 
+     - Mnemonic: code magnify 
+
+**** `<LocalLeader>id` - insert a link to a date at the given position
+
+     - Maps to: `<Plug>(neorg.tempus.insert-date)` 
+     - Mnemonic: insert date 
+
+**** `<LocalLeader>li` - invert all items in a list
+
+     Unlike `<LocalLeader>lt`, inverting a list will respect mixed list
+     items, instead of snapping all list types to a single one.
+     - Maps to: `<Plug>(neorg.pivot.list.invert)`
+     - Mnemonic: list invert 
+
+**** `<LocalLeader>lt` - toggle a list from ordered <-> unordered
+
+     - Maps to: `<Plug>(neorg.pivot.list.toggle)` 
+     - Mnemonic: list toggle 
+
+**** `<LocalLeader>ta` - mark the task under the cursor as "ambiguous"
+
+     - Maps to: `<Plug>(neorg.qol.todo-items.todo.task-ambiguous)` 
+     - Mnemonic: mark task as ambiguous 
+
+**** `<LocalLeader>tc` - mark the task under the cursor as "cancelled"
+
+     - Maps to: `<Plug>(neorg.qol.todo-items.todo.task-cancelled)` 
+     - Mnemonic: mark task as cancelled 
+
+**** `<LocalLeader>td` - mark the task under the cursor as "done"
+
+     - Maps to: `<Plug>(neorg.qol.todo-items.todo.task-done)` 
+     - Mnemonic: mark task as done 
+
+**** `<LocalLeader>th` - mark the task under the cursor as "on-hold"
+
+     - Maps to: `<Plug>(neorg.qol.todo-items.todo.task-on-hold)` 
+     - Mnemonic: mark task as on hold 
+
+**** `<LocalLeader>ti` - mark the task under the cursor as "important"
+
+     - Maps to: `<Plug>(neorg.qol.todo-items.todo.task-important)` 
+     - Mnemonic: mark task as important 
+
+**** `<LocalLeader>tp` - mark the task under the cursor as "pending"
+
+     - Maps to: `<Plug>(neorg.qol.todo-items.todo.task-pending)` 
+     - Mnemonic: mark task as pending 
+
+**** `<LocalLeader>tr` - mark the task under the cursor as "recurring"
+
+     - Maps to: `<Plug>(neorg.qol.todo-items.todo.task-recurring)` 
+     - Mnemonic: mark task as recurring 
+
+**** `<LocalLeader>tu` - mark the task under the cursor as "undone"
+
+     - Maps to: `<Plug>(neorg.qol.todo-items.todo.task-undone)` 
+     - Mnemonic: mark task as undone 
+
+**** `<M-CR>` - same as `<CR>`, except open the destination in a vertical split
+
+     - Maps to: `<Plug>(neorg.esupports.hop.hop-link.vsplit)` 
+
+**** `>.` - promote an object non-recursively
+
+     - Maps to: `<Plug>(neorg.promo.promote)` 
+
+**** `>>` - promote an object recursively
+
+     - Maps to: `<Plug>(neorg.promo.promote.nested)` 
+
+*** Visual Mode
+
+**** `<` - demote objects in range
+
+     - Maps to: `<Plug>(neorg.promo.demote.range)` 
+
+**** `>` - promote objects in range
+
+     - Maps to: `<Plug>(neorg.promo.promote.range)` 
+

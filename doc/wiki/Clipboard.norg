@@ -1,0 +1,18 @@
+
+* `core.clipboard`
+
+*** Quality of Life Features for the Clipboard
+
+* Overview
+
+  The clipboard module is a minimal and generic module allowing to overwrite or add special behaviour to the
+  `y` (yank) keybind in Neovim. 
+
+* Configuration
+
+  This module provides no configuration options! 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

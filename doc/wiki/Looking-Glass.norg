@@ -1,0 +1,25 @@
+
+* `core.looking-glass`
+
+*** Code Blocks + Superpowers
+
+    The `core.looking-glass` module magnifies code blocks and allows you to edit them in a separate buffer. 
+
+* Overview
+
+  The looking glass module provides a simple way to edit code blocks in an external buffer,
+  which allows LSPs and other language-specific tools to kick in. 
+
+  The magnify command can be accessed by running `:Neorg keybind all core.looking-glass.magnify-code-block` with your cursor underneath the code
+  block you would like to magnify - it is not bound to any key as of currently,
+  but you may map it yourself via the {:User-Keybinds:}[`core.keybinds`] module. 
+
+* Configuration
+
+  This module provides no configuration options! 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+  - {:Core-UI:}[`core.ui`] - A set of public functions to help developers create and manage UI (selection popups, prompts…) in their modules. 
+

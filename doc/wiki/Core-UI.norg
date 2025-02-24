@@ -1,0 +1,18 @@
+
+* `core.ui`
+
+*** Module for managing and displaying UIs to the user.
+
+* Configuration
+
+  This module provides no configuration options! 
+
+* Required By
+
+  - {:Dirman:}[`core.dirman`] - This module is be responsible for managing directories full of .norg files. 
+  - {:Esupports-Hop:}[`core.esupports.hop`] - "Hop" between Neorg links, following them with a single keypress. 
+  - {:Looking-Glass:}[`core.looking-glass`] - Allows for editing of code blocks within a separate buffer. 
+  - {:Core-Presenter:}[`core.presenter`] - Neorg module to create gorgeous presentation slides. 
+  - {:TOC:}[`core.qol.toc`] - Generates a table of contents for a given Norg buffer. 
+  - {:Calendar:}[`core.ui.calendar`] - Opens an interactive calendar for date-related tasks. 
+

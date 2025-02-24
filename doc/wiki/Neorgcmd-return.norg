@@ -1,0 +1,18 @@
+
+* `core.neorgcmd.commands.return`
+
+*** Provides the `:Neorg return` Command
+
+* Overview
+
+  When executed (`:Neorg return`), all currently open `.norg` files are deleted from
+  the buffer list, and the current workspace is set to "default". 
+
+* Configuration
+
+  This module provides no configuration options! 
+
+* Dependencies
+
+  - {:Neorgcmd-Module:}[`core.neorgcmd`] - This module deals with handling everything related to the `:Neorg` command. 
+

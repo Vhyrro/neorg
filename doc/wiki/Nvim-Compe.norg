@@ -1,0 +1,17 @@
+
+* `core.integrations.nvim-compe`
+
+*** Integrating Neorg with `nvim-compe`
+
+* Overview
+
+  WARNING: This module is *deprecated*, and no further support for the module will be provided.
+  That does not mean it will not work, however any bugs will not be dealt with by the main Neorg team. 
+
+  A module for integrating nvim-compe with Neorg.
+  Works with {:Completion:}[`core.completion`] to provide intelligent completions. 
+
+* Configuration
+
+  This module provides no configuration options! 
+

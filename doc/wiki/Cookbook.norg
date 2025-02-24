@@ -1,0 +1,58 @@
+
+* Neorg Cookbook
+
+  This document details a bunch of snippets and prebuilt configurations for individual modules
+  for a just works experience. 
+
+  > [!TIP]
+    If you’re looking for a quickstart setup to get you started with Neorg, check out the {:Kickstart:}[kickstart page] instead. 
+
+** Completion with `nvim-cmp`
+
+*** Requirements
+
+    - {https://github.com/hrsh7th/nvim-cmp}[`nvim-cmp`] 
+
+*** Steps
+
+    ~ In your Neorg configuration: 
+    @code lua
+    load = {
+        ["core.defaults"] = {},
+        ["core.completion"] = {
+            config = {
+                engine = "nvim-cmp",
+            }
+        },
+        ["core.integrations.nvim-cmp"] = {},
+    }
+    @end
+
+    ~ In your `nvim-cmp` configuration: 
+    @code lua
+    sources = cmp.config.sources({
+        -- ... your other sources here
+        { name = "neorg" },
+    })
+    @end
+
+** Latex Rendering
+
+*** Requirements
+
+    - A terminal with kitty graphics protocol support (kitty/ghostty) 
+    - {https://github.com/3rd/image.nvim}[`image.nvim`] installed and set up 
+
+*** Steps
+
+    ~ In your Neorg configuration: 
+    @code lua
+    load = {
+        ["core.integrations.image"] = {},
+        ["core.latex.renderer"] = {},
+    }
+    @end
+
+    ~ Place some maths within maths blocks (`$| ... |$`): default: `$|Hello, \LaTeX|$` 
+    ~ Run `:Neorg render-latex`. 
+

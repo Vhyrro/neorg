@@ -1,0 +1,62 @@
+
+* `core.text-objects`
+
+*** Navigation, Selection, and Swapping
+
+* Overview
+
+  - Easily move items up and down in the document 
+  - Provides text objects for headings, tags, and lists 
+
+** Usage
+
+   Users can create keybinds for some or all of the different events this module exposes. Those are: 
+
+   - `core.text-objects.item_up` - Moves the current "item" up 
+   - `core.text-objects.item_down` - same but down 
+   - `core.text-objects.textobject.heading.outer` 
+   - `core.text-objects.textobject.heading.inner` 
+   - `core.text-objects.textobject.tag.inner` 
+   - `core.text-objects.textobject.tag.outer` 
+   - `core.text-objects.textobject.list.outer` - around the entire list 
+
+   /Movable "items" include headings, and list items (ordered/unordered/todo)/ 
+
+*** Example
+
+    Example keybinds that would go in your Neorg configuration: 
+
+    @code lua
+    vim.keymap.set("n", "<up>", "<Plug>(neorg.text-objects.item-up)", {})
+    vim.keymap.set("n", "<down>", "<Plug>(neorg.text-objects.item-down)", {})
+    vim.keymap.set({ "o", "x" }, "iH", "<Plug>(neorg.text-objects.textobject.heading.inner)", {})
+    vim.keymap.set({ "o", "x" }, "aH", "<Plug>(neorg.text-objects.textobject.heading.outer)", {})
+    @end
+
+* Configuration
+
+** moveables (table)
+
+*** headings (list)
+
+    - \(string)  default: `"heading%d"` 
+    - \(string)  default: `"heading%d"` 
+
+*** todo_items (list)
+
+    - \(string)  default: `"todo_item%d"` 
+    - \(list)  
+    -- \(string)  default: `"todo_item%d"` 
+    -- \(string)  default: `"unordered_list%d"` 
+
+*** unordered_list_elements (list)
+
+    - \(string)  default: `"unordered_list%d"` 
+    - \(list)  
+    -- \(string)  default: `"todo_item%d"` 
+    -- \(string)  default: `"unordered_list%d"` 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

@@ -1,0 +1,97 @@
+
+* Welcome to the Neorg wiki!
+
+  Want to know how to properly use Neorg? Your answers are contained here. 
+
+* Kickstart
+
+  If you would like a Neovim setup that has Neorg configured out of the box look no further than the {:Kickstart:}[kickstart guide]! 
+
+* Using Neorg
+
+  Neorg depends on a number of other technologies, all of which have to be correctly configured to keep Neorg running smoothly.
+  For some help on understanding how your terminal, Neovim, colourschemes, tree-sitter and more come together to produce your Neorg experience (or Neorg problems), see {:Dependencies:}[this document on understanding Neorg dependencies]. 
+
+  At first configuring Neorg might be rather scary. I have to define what modules I want to use in the `require('neorg').setup()` function?
+  I don’t even know what the default available values are!
+  Don’t worry, there are guides you are free to check out. The {:Tutorial:}[tutorial] guides you through what Neorg is and its basics.
+  Afterwards, feel free to check out the {:Setup-Guide:}[configuration guide] as well as the {:Cookbook:}[cookbook]. 
+
+* Broken Installation
+
+  Having issues when installing Neorg, specifically past the `8.0.0` version? Check out the {https://github.com/pysan3/Norg-Tutorial/blob/main/MIGRATION-v8.md}[following page] where you can troubleshoot your issue from start to finish. 
+
+* Contributing to Neorg
+
+  Neorg is a very big and powerful tool behind the scenes - way bigger than it may initially seem.
+  Modules are its core foundation, and building modules is like building lego bricks to form a massive structure.
+  There’s an in-the-works tutorial dedicated to making modules {https://github.com/andreadev-it/neorg-module-tutorials/blob/main/introduction.md}[right here]! 
+
+* Module naming convention
+
+  Neorg provides default modules, and users can extend Neorg by creating community modules.
+  We agreed on a module naming convention, and it should be used as is.
+  This convention should help users know at a glance what function the module serves in the grand scheme of things.
+  - Core modules: `core.*`
+  - Integrations with 3rd party software that are emdebbed in neorg: `core.integrations.*`
+  - External modules: `external.*`
+  - Integrations with 3rd party software that aren’t emdebbed in neorg: `external.integrations.*` 
+
+* Default Modules
+
+  Neorg comes with some default modules that will be automatically loaded if you require the {:Defaults:}[`core.defaults`] module: 
+
+  - {:Clipboard-Code-Blocks:}[`core.clipboard.code-blocks`] - Removes beginning whitespace from text copied from code blocks. 
+  - {:Esupports-Hop:}[`core.esupports.hop`] - "Hop" between Neorg links, following them with a single keypress. 
+  - {:Indent:}[`core.esupports.indent`] - A set of instructions for Neovim to indent Neorg documents. 
+  - {:Metagen:}[`core.esupports.metagen`] - A Neorg module for generating document metadata automatically. 
+  - {:Itero:}[`core.itero`] - Module designed to continue lists, headings and other iterables. 
+  - {:Journal:}[`core.journal`] - Easily track a journal within Neorg. 
+  - {:User-Keybinds:}[`core.keybinds`] - Module for managing keybindings with Neorg mode support. 
+  - {:Looking-Glass:}[`core.looking-glass`] - Allows for editing of code blocks within a separate buffer. 
+  - {:Pivot:}[`core.pivot`] - Toggles the type of list currently under the cursor. 
+  - {:Promo:}[`core.promo`] - Promotes or demotes nestable items within Neorg files. 
+  - {:TOC:}[`core.qol.toc`] - Generates a table of contents for a given Norg buffer. 
+  - {:Todo-Items:}[`core.qol.todo_items`] - Module for implementing todo lists. 
+  - {:Tangling:}[`core.tangle`] - An Advanced Code Block Exporter. 
+  - {:Todo-Introspector:}[`core.todo-introspector`] - Module for displaying progress of completed subtasks in the virtual line. 
+  - {:Calendar:}[`core.ui.calendar`] - Opens an interactive calendar for date-related tasks. 
+
+* Other Modules
+
+  Some modules are not included by default as they require some manual configuration or are merely extra bells and whistles
+  and are not critical to editing `.norg` files. Below is a list of all modules that are not required by default: 
+
+  - {:Completion:}[`core.completion`] - A wrapper to interface with several different completion engines. 
+  - {:Concealer:}[`core.concealer`] - Enhances the basic Neorg experience by using icons instead of text. 
+  - {:Dirman:}[`core.dirman`] - This module is be responsible for managing directories full of .norg files. 
+  - {:Exporting-Files:}[`core.export`] - Exports Neorg documents into any other supported filetype. 
+  - {:Markdown-Export:}[`core.export.markdown`] - Interface for `core.export` to allow exporting to markdown. 
+  - {:Core-Latex-Renderer:}[`core.latex.renderer`] - An experimental module for rendering latex images inline. 
+  - {:Core-Presenter:}[`core.presenter`] - Neorg module to create gorgeous presentation slides. 
+  - {:Summary:}[`core.summary`] - Creates links to all files in any workspace. 
+  - {:Norg-Text-Objects:}[`core.text-objects`] - A Neorg module for moving and selecting elements of the document. 
+
+* Developer modules
+
+  These are modules that are only meant for developers. They are generally required in other modules: 
+
+  - {:Autocommands:}[`core.autocommands`] - Handles the creation and management of Neovim’s autocommands. 
+  - {:Clipboard:}[`core.clipboard`] - A module to manipulate and interact with the user’s clipboard. 
+  - {:Defaults:}[`core.defaults`] - Metamodule for storing the most necessary modules. 
+  - {:Dirman-Utils:}[`core.dirman.utils`] - A set of utilities for the `core.dirman` module. 
+  - {:Filesystem:}[`core.fs`] - A cross-platform set of utilities to traverse filesystems. 
+  - {:Core-Highlights:}[`core.highlights`] - Manages your highlight groups with this module. 
+  - {https://github.com/nvim-neorg/neorg/wiki/Coq_nvim}[`core.integrations.coq_nvim`] - A module for integrating coq_nvim with Neorg. 
+  - {:Nvim-Cmp:}[`core.integrations.nvim-cmp`] - A module for integrating nvim-cmp with Neorg. 
+  - {:Nvim-Compe:}[`core.integrations.nvim-compe`] - A module for integrating nvim-compe with Neorg. 
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+  - {:Neorgcmd-Module:}[`core.neorgcmd`] - This module deals with handling everything related to the `:Neorg` command. 
+  - {:Neorgcmd-return:}[`core.neorgcmd.commands.return`] - Return to last location before entering Neorg. 
+  - {:Queries-Module:}[`core.queries.native`] - TS wrapper in order to fetch nodes using a custom table. 
+  - {:Scanner-Module:}[`core.scanner`] - This module is an implementation of a scanner that can be used anywhere TS can’t be used. 
+  - {:Storage:}[`core.storage`] - Deals with storing persistent data across Neorg sessions. 
+  - {:Syntax:}[`core.syntax`] - Handles interaction for syntax files for code blocks. 
+  - {:Tempus:}[`core.tempus`] - Parses and handles dates in Neorg. 
+  - {:Core-UI:}[`core.ui`] - A set of public functions to help developers create and manage UI (selection popups, prompts…) in their modules. 
+

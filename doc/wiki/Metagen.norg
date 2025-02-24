@@ -1,0 +1,94 @@
+
+* `core.esupports.metagen`
+
+*** Manually Writing Metadata? No Thanks
+
+    The metagen module automatically places relevant metadata at the top of your `.norg` files. 
+
+* Overview
+
+  The metagen module exposes two commands - `:Neorg inject-metadata` and `:Neorg update-metadata`. 
+
+  - The `inject-metadata` command will remove any existing metadata and overwrite it with fresh information. 
+  - The `update-metadata` preserves existing info, updating things like the `updated` fields (when the file
+    was last edited) as well as a few other non-destructive fields. 
+
+* Configuration
+
+** author (string)
+
+   Custom author name that overrides default value if not nil or empty
+   Default value is autopopulated by querying the current user’s system username. 
+
+   default: `""` 
+
+** delimiter (string)
+
+   Custom delimiter between tag and value 
+
+   default: `": "` 
+
+** tab (string)
+
+   How to generate a tabulation inside the `@document.meta` tag 
+
+   default: `""` 
+
+** template (nil)
+
+   Custom template to use for generating content inside `@document.meta` tag 
+
+   default: `default_template` 
+
+** timezone (string)
+   Timezone information in the timestamps 
+
+   - "utc" the timestamp is in UTC+0 
+   - "local" the timestamp is in the local timezone 
+   - "implicit-local" like "local", but the timezone information is omitted from the timestamp 
+
+   default: `"local"` 
+
+** type (string)
+   One of "none", "auto" or "empty" 
+
+   - "none" generates no metadata 
+   - "auto" generates metadata if it is not present 
+   - "empty" generates metadata only for new files/buffers. 
+
+   default: `"none"` 
+
+** undojoin_updates (boolean)
+
+   Whether or not to call `:h :undojoin` just before changing the timestamp in
+   `update_metadata`. This will make your undo key undo the last change before writing the file
+   in addition to the timestamp change. This will move your cursor to the top of the file. For
+   users with an autosave plugin, this option must be paired with keybinds for undo/redo to
+   avoid problems with undo tree branching: 
+
+   @code lua
+   vim.keymap.set("n", "u", function()
+       require("neorg.modules").get_module("core.esupports.metagen").skip_next_update()
+       local k = vim.api.nvim_replace_termcodes("u<c-o>", true, false, true)
+       vim.api.nvim_feedkeys(k, 'n', false)
+   end)
+   vim.keymap.set("n", "<C-r>", function()
+       require("neorg.modules").get_module("core.esupports.metagen").skip_next_update()
+       local k = vim.api.nvim_replace_termcodes("<c-r><c-o>", true, false, true)
+       vim.api.nvim_feedkeys(k, 'n', false)
+   end)
+   @end
+
+   default: `false` 
+
+** update_date (boolean)
+
+   Whether updated date field should be automatically updated on save if required 
+
+   default: `true` 
+
+* Dependencies
+
+  - {:Autocommands:}[`core.autocommands`] - Handles the creation and management of Neovim’s autocommands. 
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

@@ -1,0 +1,210 @@
+
+* `core.esupports.indent`
+
+*** Formatting on the Fly
+
+* Overview
+
+  `core.esupports.indent` uses Norg’s format to unambiguously determine
+  the indentation level for the current line. 
+
+  The indent calculation is aided by {:Treesitter-Integration:}[treesitter], which
+  means that the quality of indents is "limited" by the quality of the produced syntax tree,
+  which will get better and better with time. 
+
+  To reindent a file, you may use the inbuilt Neovim `=` operator.
+  Indent levels are also calculated as you type, but may not be entirely correct
+  due to incomplete syntax trees (if you find any such examples, then file an issue!). 
+
+* Configuration
+
+** dedent_excess (boolean)
+
+   When false will not dedent nodes, only indent them. This means that if a node
+   is indented too much to the right, it will not be touched. It will only be indented
+   if the node is to the left of the expected indentation level. 
+
+   Useful when writing documentation in the style of vimdoc, where content is indented
+   heavily to the right in comparison to the default Neorg style. 
+
+   default: `true` 
+
+** format_on_enter (boolean)
+
+   When true, will reformat the current line every time you press `<CR>` (Enter). 
+
+   default: `true` 
+
+** format_on_escape (boolean)
+
+   When true, will reformat the current line every time you press `<Esc>` (i.e. every
+   time you leave insert mode). 
+
+   default: `true` 
+
+** indents (table)
+
+   The table of indentations. 
+
+   This table describes a set of node types and how they should be indented
+   when encountered in the syntax tree. 
+
+   It also allows for certain nodes to be given properties (modifiers), which
+   can additively stack indentation given more complex circumstances. 
+
+*** _ (table)
+
+    Default behaviour for every other node not explicitly defined. 
+
+**** indent (number)
+
+     default: `0` 
+
+**** modifiers (list)
+
+     - \(string)  default: `"under-headings"` 
+
+*** heading1 (table)
+
+    Indent behaviour for headings. 
+
+    In "idiomatic norg", headings should not be indented. 
+
+**** indent (number)
+
+     default: `0` 
+
+*** heading2 (table)
+
+    Indent behaviour for headings. 
+
+    In "idiomatic norg", headings should not be indented. 
+
+**** indent (number)
+
+     default: `0` 
+
+*** heading3 (table)
+
+    Indent behaviour for headings. 
+
+    In "idiomatic norg", headings should not be indented. 
+
+**** indent (number)
+
+     default: `0` 
+
+*** heading4 (table)
+
+    Indent behaviour for headings. 
+
+    In "idiomatic norg", headings should not be indented. 
+
+**** indent (number)
+
+     default: `0` 
+
+*** heading5 (table)
+
+    Indent behaviour for headings. 
+
+    In "idiomatic norg", headings should not be indented. 
+
+**** indent (number)
+
+     default: `0` 
+
+*** heading6 (table)
+
+    Indent behaviour for headings. 
+
+    In "idiomatic norg", headings should not be indented. 
+
+**** indent (number)
+
+     default: `0` 
+
+*** paragraph_segment (table)
+
+    Indent behaviour for paragraph segments (lines of text). 
+
+**** indent (number)
+
+     default: `0` 
+
+**** modifiers (list)
+
+     - \(string)  default: `"under-headings"` 
+     - \(string)  default: `"under-nestable-detached-modifiers"` 
+
+*** ranged_tag (table)
+
+**** indent (number)
+
+     default: `0` 
+
+**** modifiers (list)
+
+     - \(string)  default: `"under-headings"` 
+
+*** ranged_tag_content (table)
+
+    Ranged tag contents’ indentation should be calculated by Neovim itself. 
+
+**** indent (number)
+
+     default: `-1` 
+
+*** ranged_tag_end (table)
+
+    `@end` tags should always be indented as far as the beginning `@` ranged verbatim tag. 
+
+**** indent (function)
+
+     default: `function(_, node)` 
+
+*** strong_paragraph_delimiter (table)
+
+    Indent behaviour for strong paragraph delimiters. 
+
+    The indentation of these should be determined based on the heading level
+    that it is a part of. Since the `strong_paragraph_delimiter` node isn’t actually
+    a child of the previous heading in the syntax tree some extra work is required to
+    make it indent as expected. 
+
+**** indent (function)
+
+     default: `function(buf, _, line)` 
+
+** modifiers (table)
+
+   Apart from indents, modifiers may also be defined. 
+
+   These are repeatable instructions for nodes that share common traits. 
+
+*** under-headings (function)
+
+    For any object that can exist under headings 
+
+    default: `function(_, node)` 
+
+*** under-nestable-detached-modifiers (function)
+
+    For any object that should be indented under a list 
+
+    default: `function(_, node)` 
+
+** tweaks (empty list)
+
+   Tweaks are user defined `node_name` => `indent_level` mappings,
+   allowing the user to overwrite the indentation level for certain nodes. 
+
+* Dependencies
+
+  - {:Autocommands:}[`core.autocommands`] - Handles the creation and management of Neovim’s autocommands. 
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+
+* Required By
+
+  - {:Promo:}[`core.promo`] - Promotes or demotes nestable items within Neorg files. 
+

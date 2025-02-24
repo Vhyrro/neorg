@@ -1,0 +1,42 @@
+
+* `core.export`
+
+*** Convert Neorg Files to other Filetypes with `core.export`
+
+* Overview
+
+  When sending files to people not invested in Neorg it’s nice to be able to use a format
+  that /they/ use. The `core.export` module is a backend module providing functionality
+  to write your own exporter for any given filetype. 
+
+  All export functionality is provided by the `:Neorg export` command. 
+
+  To export the currently opened buffer to another file format, you should use the `:Neorg export to-file` command.
+  The command takes the following arguments:
+  - `path` - the path to export to. Examples are: `my-file.md`, `~/output.md`.
+    If the second argument is not provided Neorg will try to infer the filetype to convert to through
+    the file extension.
+  - `filetype` (optional) - the filetype to export to. Useful if you want to use a non-standard extension, or
+    if the filetype you’re using cannot be inferred automatically. Note that this filetype /must/ be a filetype
+    that Neovim itself provides and/or understands, i.e. `md` or `markd` is not a valid filetype, however `markdown` is. 
+
+  Neorg also supports exporting a directory of files: this is where the `:Neorg export directory` command comes into play.
+  It takes 3 arguments:
+  - `directory` - the directory to export
+  - `filetype` - the filetype to export to
+  - `output-dir` (optional) - a custom output directory to use. If not provided will fall back to `config.public.export_dir`
+    (see {# configuration}). 
+
+* Configuration
+
+** export_dir (string)
+
+   The directory to export to when running `:Neorg export directory`.
+   The string can be formatted with the special keys: `<export-dir>` and `<language>`. 
+
+   default: `"<export-dir>/<language>-export"` 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

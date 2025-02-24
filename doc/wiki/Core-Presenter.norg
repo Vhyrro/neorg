@@ -1,0 +1,36 @@
+
+* `core.presenter`
+
+*** Powerpoint in Neorg
+
+    The presenter module creates slideshows out of notes or documents. 
+
+* Overview
+
+  The presenter module provides a special Neorg display that resembles an active slideshow
+  presentation. 
+
+  To set it up, first be sure to set the `zen_mode` variable in the {# configuration}.
+  Afterwards, run `:Neorg presenter start` on any Norg file. The presenter will split up your file
+  at each level 1 heading, and display each in a different slide. 
+
+  NOTE: This module is due for a rewrite. All of its behaviour is not fully documented here as it will be
+  overwritten soon anyway. 
+
+* Configuration
+
+** zen_mode (string)
+
+   Zen mode plugin to use. Currenly suppported: 
+
+   - `zen-mode` - https://github.com/folke/zen-mode.nvim 
+   - `truezen` - https://github.com/Pocco81/TrueZen.nvim 
+
+   default: `""` 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+  - {:Queries-Module:}[`core.queries.native`] - TS wrapper in order to fetch nodes using a custom table. 
+  - {:Core-UI:}[`core.ui`] - A set of public functions to help developers create and manage UI (selection popups, prompts…) in their modules. 
+

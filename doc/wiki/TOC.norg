@@ -1,0 +1,32 @@
+
+* `core.qol.toc`
+
+*** A Bird’s Eye View of Norg Documents
+
+    The TOC module generates a table of contents for a given Norg buffer. 
+
+* Overview
+
+  The TOC module exposes a single command - `:Neorg toc`. This command can be executed with one of three
+  optional arguments: `left`, `right` and `qflist`. 
+
+  When `left` or `right` is supplied, the Table of Contents split is placed on that side of the screen.
+  When the `qflist` argument is provided, the whole table of contents is sent to the Neovim quickfix list,
+  should that be more convenient for you. 
+
+  When in the TOC view, `<CR>` can be pressed on any of the entries to move to that location in the respective
+  Norg document. The TOC view updates automatically when switching buffers. 
+
+* Configuration
+
+** enter (boolean)
+
+   Enter a ToC window opened manually (any ToC window not opened by auto_toc) 
+
+   default: `true` 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+  - {:Core-UI:}[`core.ui`] - A set of public functions to help developers create and manage UI (selection popups, prompts…) in their modules. 
+

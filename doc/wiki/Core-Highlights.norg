@@ -1,0 +1,716 @@
+
+* `core.highlights`
+
+*** No Colour Means no Productivity
+
+* Overview
+
+  `core.highlights` maps all possible highlight groups available throughout
+  Neorg under a single tree of highlights: `@neorg.*`. 
+
+* Configuration
+
+** dim (table)
+
+   Handles the dimming of certain highlight groups. 
+
+   It sometimes is favourable to use an existing highlight group,
+   but to dim or brighten it a little bit. 
+
+   To do so, you may use this table, which, similarly to the `highlights` table,
+   will concatenate nested trees to form a highlight group name. 
+
+   The difference is, however, that the leaves of the tree are a table, not a single string.
+   This table has three possible fields: 
+
+   - `reference` - which highlight to use as reference for the dimming. 
+   - `percentage` - by how much to darken the reference highlight. This value may be between
+     `-100` and `100`, where negative percentages brighten the reference highlight, whereas
+     positive values dim the highlight by the given percentage. 
+
+*** markup (table)
+
+**** inline_comment (table)
+
+***** percentage (number)
+
+      default: `40` 
+
+***** reference (string)
+
+      default: `"Normal"` 
+
+**** verbatim (table)
+
+***** percentage (number)
+
+      default: `20` 
+
+***** reference (string)
+
+      default: `"Normal"` 
+
+*** tags (table)
+
+**** ranged_verbatim (table)
+
+***** code_block (table)
+
+****** affect (string)
+
+       default: `"background"` 
+
+****** percentage (number)
+
+       default: `15` 
+
+****** reference (string)
+
+       default: `"Normal"` 
+
+** highlights (table)
+
+   The TS highlights for each Neorg type. 
+
+   The `highlights` table is a large collection of nested trees. At the leaves of each of these
+   trees is the final highlight to apply to that tree. For example: `"+@comment"` tells Neorg to
+   link to an existing highlight group `@comment` (denoted by the `+` prefix). When no prefix is
+   found, the string is treated as arguments passed to `:highlight`, for example: `gui=bold fg=#000000`. 
+
+   Nested trees concatenate, thus: 
+
+   @code lua
+   tags = {
+       ranged_verbatim = {
+           begin = "+@comment",
+       },
+   }
+   @end
+
+   matches the highlight group: 
+
+   default: `@neorg.tags.ranged_verbatim.begin` 
+
+   and converts into the following command: 
+
+   default: `highlight! link @neorg.tags.ranged_verbatim.begin @comment` 
+
+*** anchors (table)
+
+    Highlights for the anchor syntax: `[name]{location}`. 
+
+**** declaration (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** definition (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+*** definitions (table)
+
+    Highlights for definitions (`$ Definition`). 
+
+**** content (string)
+
+     default: `"+@markup.italic"` 
+
+**** prefix (string)
+
+     default: `"+@punctuation.delimiter"` 
+
+**** suffix (string)
+
+     default: `"+@punctuation.delimiter"` 
+
+**** title (string)
+
+     default: `"+@markup.strong"` 
+
+*** delimiters (table)
+    Highlights for all the delimiter types. These include: 
+
+    - `---` - the weak delimiter 
+    - `===` - the strong delimiter 
+    - `___` - the horizontal rule 
+
+**** horizontal_line (string)
+
+     default: `"+@punctuation.delimiter"` 
+
+**** strong (string)
+
+     default: `"+@punctuation.delimiter"` 
+
+**** weak (string)
+
+     default: `"+@punctuation.delimiter"` 
+
+*** error (string)
+
+    In case of errors in the syntax tree, use the following highlight. 
+
+    default: `"+Error"` 
+
+*** footnotes (table)
+
+    Highlights for footnotes (`^ My Footnote`). 
+
+**** content (string)
+
+     default: `"+@markup.italic"` 
+
+**** prefix (string)
+
+     default: `"+@punctuation.delimiter"` 
+
+**** suffix (string)
+
+     default: `"+@punctuation.delimiter"` 
+
+**** title (string)
+
+     default: `"+@markup.strong"` 
+
+*** headings (table)
+
+    Highlights for each individual heading level. 
+
+**** 1 (table)
+
+***** prefix (string)
+
+      default: `"+@attribute"` 
+
+***** title (string)
+
+      default: `"+@attribute"` 
+
+**** 2 (table)
+
+***** prefix (string)
+
+      default: `"+@label"` 
+
+***** title (string)
+
+      default: `"+@label"` 
+
+**** 3 (table)
+
+***** prefix (string)
+
+      default: `"+@constant"` 
+
+***** title (string)
+
+      default: `"+@constant"` 
+
+**** 4 (table)
+
+***** prefix (string)
+
+      default: `"+@string"` 
+
+***** title (string)
+
+      default: `"+@string"` 
+
+**** 5 (table)
+
+***** prefix (string)
+
+      default: `"+@label"` 
+
+***** title (string)
+
+      default: `"+@label"` 
+
+**** 6 (table)
+
+***** prefix (string)
+
+      default: `"+@constructor"` 
+
+***** title (string)
+
+      default: `"+@constructor"` 
+
+*** links (table)
+
+**** description (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** file (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** location (table)
+
+***** definition (table)
+
+****** prefix (string)
+
+       default: `"+@neorg.definitions.prefix"` 
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+***** external_file (table)
+
+****** prefix (string)
+
+       default: `"+@label"` 
+
+***** footnote (table)
+
+****** prefix (string)
+
+       default: `"+@neorg.footnotes.prefix"` 
+
+***** generic (table)
+
+****** prefix (string)
+
+       default: `"+@type"` 
+
+***** heading (table)
+
+****** 1 (table)
+
+******* prefix (string)
+
+        default: `"+@neorg.headings.1.prefix"` 
+
+****** 2 (table)
+
+******* prefix (string)
+
+        default: `"+@neorg.headings.2.prefix"` 
+
+****** 3 (table)
+
+******* prefix (string)
+
+        default: `"+@neorg.headings.3.prefix"` 
+
+****** 4 (table)
+
+******* prefix (string)
+
+        default: `"+@neorg.headings.4.prefix"` 
+
+****** 5 (table)
+
+******* prefix (string)
+
+        default: `"+@neorg.headings.5.prefix"` 
+
+****** 6 (table)
+
+******* prefix (string)
+
+        default: `"+@neorg.headings.6.prefix"` 
+
+***** marker (table)
+
+****** prefix (string)
+
+       default: `"+@neorg.markers.prefix"` 
+
+***** url (string)
+
+      default: `"+@markup.link.url"` 
+
+*** lists (table)
+
+    Highlights for all the possible levels of ordered and unordered lists. 
+
+**** ordered (table)
+
+***** prefix (string)
+
+      default: `"+@keyword.repeat"` 
+
+**** unordered (table)
+
+***** prefix (string)
+
+      default: `"+@markup.list"` 
+
+*** markup (table)
+
+    Highlights for inline markup. 
+
+    This is all the highlights like `bold`, `italic` and so on. 
+
+**** bold (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** free_form_delimiter (string)
+
+     default: `"+NonText"` 
+
+**** inline_comment (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** inline_math (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** italic (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** spoiler (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** strikethrough (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** subscript (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** superscript (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** underline (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** variable (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+**** verbatim (table)
+
+***** delimiter (string)
+
+      default: `"+NonText"` 
+
+*** modifiers (table)
+
+    Inline modifiers. 
+
+    This includes: 
+
+    - `~` - the trailing modifier 
+    - All link characters (`{`, `}`, `[`, `]`, `<`, `>`) 
+    - The escape character (`\`) 
+
+**** escape (string)
+
+     default: `"+@type"` 
+
+**** link (string)
+
+     default: `"+NonText"` 
+
+*** quotes (table)
+
+    Highlights for all the possible levels of quotes. 
+
+**** 1 (table)
+
+***** content (string)
+
+      default: `"+@punctuation.delimiter"` 
+
+***** prefix (string)
+
+      default: `"+@punctuation.delimiter"` 
+
+**** 2 (table)
+
+***** content (string)
+
+      default: `"+Blue"` 
+
+***** prefix (string)
+
+      default: `"+Blue"` 
+
+**** 3 (table)
+
+***** content (string)
+
+      default: `"+Yellow"` 
+
+***** prefix (string)
+
+      default: `"+Yellow"` 
+
+**** 4 (table)
+
+***** content (string)
+
+      default: `"+Red"` 
+
+***** prefix (string)
+
+      default: `"+Red"` 
+
+**** 5 (table)
+
+***** content (string)
+
+      default: `"+Green"` 
+
+***** prefix (string)
+
+      default: `"+Green"` 
+
+**** 6 (table)
+
+***** content (string)
+
+      default: `"+Brown"` 
+
+***** prefix (string)
+
+      default: `"+Brown"` 
+
+*** rendered (table)
+
+    Rendered Latex, this will dictate the foreground color of latex images rendered via
+    core.latex.renderer 
+
+**** latex (string)
+
+     default: `"+Normal"` 
+
+*** selection_window (table)
+
+    Highlights displayed in Neorg selection window popups. 
+
+**** arrow (string)
+
+     default: `"+@none"` 
+
+**** heading (string)
+
+     default: `"+@annotation"` 
+
+**** key (string)
+
+     default: `"+@module"` 
+
+**** keyname (string)
+
+     default: `"+@constant"` 
+
+**** nestedkeyname (string)
+
+     default: `"+@string"` 
+
+*** tags (table)
+
+    Highlights displayed in all sorts of tag types. 
+
+    These include: `@`, `.`, `|||`, `#`, `+` and `=`. 
+
+**** carryover (table)
+
+     Highlights for the carryover (`#`, `+`) tags. 
+
+***** begin (string)
+
+      default: `"+@label"` 
+
+***** name (table)
+
+****** delimiter (string)
+
+       default: `"+@none"` 
+
+****** word (string)
+
+       default: `"+@label"` 
+
+***** parameters (string)
+
+      default: `"+@string"` 
+
+**** comment (table)
+
+     Highlights for the content of any tag named `comment`. 
+
+     Most prominent use case is for the `#comment` carryover tag. 
+
+***** content (string)
+
+      default: `"+@comment"` 
+
+**** ranged_verbatim (table)
+
+     Highlights for the `@` verbatim tags. 
+
+***** begin (string)
+
+      default: `"+@keyword"` 
+
+***** document_meta (table)
+
+****** array (table)
+
+******* bracket (string)
+
+        default: `"+@punctuation.bracket"` 
+
+******* value (string)
+
+        default: `"+@none"` 
+
+****** authors (string)
+
+       default: `"+@annotation"` 
+
+****** categories (string)
+
+       default: `"+@keyword"` 
+
+****** created (string)
+
+       default: `"+@number.float"` 
+
+****** description (string)
+
+       default: `"+@label"` 
+
+****** key (string)
+
+       default: `"+@variable.member"` 
+
+****** number (string)
+
+       default: `"+@number"` 
+
+****** object (table)
+
+******* bracket (string)
+
+        default: `"+@punctuation.bracket"` 
+
+****** title (string)
+
+       default: `"+@markup.heading"` 
+
+****** trailing (string)
+
+       default: `"+@keyword.repeat"` 
+
+****** updated (string)
+
+       default: `"+@number.float"` 
+
+****** value (string)
+
+       default: `"+@string"` 
+
+****** version (string)
+
+       default: `"+@number.float"` 
+
+***** end (string)
+
+      default: `"+@keyword"` 
+
+***** name (table)
+
+****** delimiter (string)
+
+       default: `"+@none"` 
+
+****** word (string)
+
+       default: `"+@keyword"` 
+
+***** parameters (string)
+
+      default: `"+@type"` 
+
+*** todo_items (table)
+
+    Highlights for TODO items. 
+
+    This strictly covers the `( )` component of any detached modifier. In other words, these
+    highlights only bother with highlighting the brackets and the content within, but not the
+    object containing the TODO item itself. 
+
+**** cancelled (string)
+
+     default: `"+NonText"` 
+
+**** done (string)
+
+     default: `"+@string"` 
+
+**** on_hold (string)
+
+     default: `"+@comment.note"` 
+
+**** pending (string)
+
+     default: `"+@module"` 
+
+**** recurring (string)
+
+     default: `"+@keyword.repeat"` 
+
+**** uncertain (string)
+
+     default: `"+@boolean"` 
+
+**** undone (string)
+
+     default: `"+@punctuation.delimiter"` 
+
+**** urgent (string)
+
+     default: `"+@comment.error"` 
+
+* Dependencies
+
+  - {:Autocommands:}[`core.autocommands`] - Handles the creation and management of Neovim’s autocommands. 
+
+* Required By
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+  - {:Core-Latex-Renderer:}[`core.latex.renderer`] - An experimental module for rendering latex images inline. 
+

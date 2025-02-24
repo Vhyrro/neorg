@@ -1,0 +1,85 @@
+
+* `core.keybinds`
+
+*** The Language of Neorg
+
+    `core.keybinds` manages mappings for operations on or in `.norg` files. 
+
+* Overview
+
+  The `core.keybinds` module configures an out-of-the-box Neovim experience by providing a default
+  set of keys. 
+
+  To disable default keybinds, see the next section. To remap the existing keys, see {https://github.com/nvim-neorg/neorg/wiki/User-Keybinds#remapping-keys}[here]. 
+
+  To find common problems, consult the {https://github.com/nvim-neorg/neorg/wiki/User-Keybinds#faq}[FAQ]. 
+
+*** Disabling Default Keybinds
+
+    By default when you load the `core.keybinds` module all keybinds will be enabled. If you would like to change this, be sure to set `default_keybinds` to `false`: 
+
+    @code lua
+    ["core.keybinds"] = {
+        config = {
+            default_keybinds = false,
+        },
+    }
+    @end
+
+*** Remapping Keys
+
+    To understand how to effectively remap keys, one must understand how keybinds are set.
+    Neorg binds actions to various `<Plug>` mappings that look like so: `<Plug>(neorg...`. 
+
+    To remap a key, simply map an action somewhere in your configuration: 
+
+    default: `vim.keymap.set("n", "my-key-here", "<Plug>(neorg.pivot.list.toggle)", {})` 
+
+    Neorg will recognize that the key has been bound by you and not bind its own key. 
+
+**** Binding Keys for Norg Files Only
+
+     This approach has a downside - all of Neorg’s keybinds are set on a per-buffer basis
+     so that keybinds don’t "overflow" into buffers you don’t want them active in. 
+
+     When you map a key using `vim.keymap.set`, you set a global key which is always active, even in non-norg
+     files. There are two ways to combat this:
+     - Create a file under `<your-configuration>/ftplugin/norg.lua`:
+       `lua   vim.keymap.set("n", "my-key-here", "<Plug>(neorg.pivot.list.toggle)", { buffer = true })`
+     - Create an autocommand using `vim.api.nvim_create_autocmd`:
+       `lua   vim.api.nvim_create_autocmd("Filetype", {       pattern = "norg",       callback = function()           vim.keymap.set("n", "my-key-here", "<Plug>(neorg.pivot.list.toggle)", { buffer = true })       end,   })` 
+
+     Notice that in both situations a `{ buffer = true \}` was supplied to the function.
+     This way, your remapped keys will never interfere with other files. 
+
+*** Discovering Keys
+
+    A comprehensive list of all keybinds can be found on {:Default-Keybinds:}[this page!] 
+
+** FAQ
+
+*** Some (or all) keybinds do not work
+
+    Neorg refuses to bind keys when it knows they’ll interfere with your configuration.
+    Run `:checkhealth neorg` to see a full list of what keys Neorg has considered "conflicted"
+    or "rebound". 
+
+    If you see that /all/ of your keybinds are in conflict, you’re likely using a plugin that is mapping to your
+    local leader key. This is a known issue with older versions of `which-key.nvim`. Since version `3.0` of which-key the issue has been fixed - we
+    recommend updating to the latest version to resolve the errors. 
+
+* Configuration
+
+** default_keybinds (boolean)
+
+   Whether to enable the default keybinds. 
+
+   default: `true` 
+
+** preset (string)
+
+   Which keybind preset to use.
+   Currently allows only a single value: `"neorg"`. 
+
+   default: `"neorg"` 
+

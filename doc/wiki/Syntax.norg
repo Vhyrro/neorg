@@ -1,0 +1,68 @@
+
+* `core.syntax`
+
+*** Where Treesitter can’t Reach
+
+    When a language not supported by Treesitter is found a fallback is made to use vim regex highlighting. 
+
+* Overview
+
+  The `core.syntax` module highlights any `@code` region where there is no treesitter parser present
+  to highlight the region. 
+
+  This module very closely resembles the {:Concealer:}[`concealer`], but some parts have been
+  adapted to fit the correct use case. 
+
+***** Author’s note:
+
+      This module will appear as spaghetti code at first glance. This is intentional.
+      If one needs to edit this module, it is best to talk to me at `katawful` on GitHub.
+      Any edit is assumed to break this module. 
+
+* Configuration
+
+** performance (table)
+
+   Performance options for highlighting. 
+
+   These options exhibit the same behaviour as the {:Concealer:}[`concealer`]’s. 
+
+*** increment (number)
+
+    How many lines each "chunk" of a file should take up. 
+
+    When the size of the buffer is greater than this value,
+    the buffer is then broken up into equal chunks and operations
+    are done individually on those chunks. 
+
+    default: `1250` 
+
+*** interval (number)
+
+    How long the syntax module should wait before starting to conceal
+    a new chunk. 
+
+    default: `500` 
+
+*** max_debounce (number)
+
+    The maximum amount of recalculations that take place at a single time.
+    More operations than this count will be dropped. 
+
+    Especially useful when e.g. holding down `x` in a buffer, forcing
+    hundreds of recalculations at a time. 
+
+    default: `5` 
+
+*** timeout (number)
+
+    How long the syntax module should wait before starting to conceal
+    the buffer. 
+
+    default: `0` 
+
+* Dependencies
+
+  - {:Autocommands:}[`core.autocommands`] - Handles the creation and management of Neovim’s autocommands. 
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

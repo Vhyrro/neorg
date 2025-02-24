@@ -1,0 +1,98 @@
+
+* `core.integrations.treesitter`
+
+*** Snazzy Treesitter Integration
+
+* Configuration
+
+** configure_parsers (boolean)
+
+   If true will auto-configure the parsers to use the recommended setup.
+   Set to false only if you know what you’re doing, or if the setting messes
+   with your personal configuration. 
+
+   default: `true` 
+
+** install_parsers (boolean)
+
+   If true will automatically install Norg parsers if they are not present. 
+
+   default: `true` 
+
+** parser_configs (table)
+
+   Configurations for each parser as required by `nvim-treesitter`.
+   If you would like to tweak your parser configs you may do so here. 
+
+*** norg (table)
+
+    Configuration for the mainline norg parser. 
+
+**** branch (string)
+
+     default: `"main"` 
+
+**** files (list)
+
+     - \(string)  default: `"src/parser.c"` 
+     - \(string)  default: `"src/scanner.cc"` 
+
+**** revision (string)
+
+     default: `"6348056b999f06c2c7f43bb0a5aa7cfde5302712"` 
+
+**** url (string)
+
+     default: `"https://github.com/nvim-neorg/tree-sitter-norg"` 
+
+*** norg_meta (table)
+
+    Configuration for the metadata parser (used to parse the contents
+    of `@document.meta` blocks). 
+
+**** branch (string)
+
+     default: `"main"` 
+
+**** files (list)
+
+     - \(string)  default: `"src/parser.c"` 
+
+**** revision (string)
+
+     default: `"a479d1ca05848d0b51dd25bc9f71a17e0108b240"` 
+
+**** url (string)
+
+     default: `"https://github.com/nvim-neorg/tree-sitter-norg-meta"` 
+
+* Dependencies
+
+  - {:Core-Highlights:}[`core.highlights`] - Manages your highlight groups with this module. 
+
+* Required By
+
+  - {:Clipboard:}[`core.clipboard`] - A module to manipulate and interact with the user’s clipboard. 
+  - {:Completion:}[`core.completion`] - A wrapper to interface with several different completion engines. 
+  - {:Concealer:}[`core.concealer`] - Enhances the basic Neorg experience by using icons instead of text. 
+  - {:Esupports-Hop:}[`core.esupports.hop`] - "Hop" between Neorg links, following them with a single keypress. 
+  - {:Indent:}[`core.esupports.indent`] - A set of instructions for Neovim to indent Neorg documents. 
+  - {:Metagen:}[`core.esupports.metagen`] - A Neorg module for generating document metadata automatically. 
+  - {:Exporting-Files:}[`core.export`] - Exports Neorg documents into any other supported filetype. 
+  - {:Markdown-Export:}[`core.export.markdown`] - Interface for `core.export` to allow exporting to markdown. 
+  - {:Itero:}[`core.itero`] - Module designed to continue lists, headings and other iterables. 
+  - {:Journal:}[`core.journal`] - Easily track a journal within Neorg. 
+  - {:Core-Latex-Renderer:}[`core.latex.renderer`] - An experimental module for rendering latex images inline. 
+  - {:Looking-Glass:}[`core.looking-glass`] - Allows for editing of code blocks within a separate buffer. 
+  - {:Pivot:}[`core.pivot`] - Toggles the type of list currently under the cursor. 
+  - {:Core-Presenter:}[`core.presenter`] - Neorg module to create gorgeous presentation slides. 
+  - {:Promo:}[`core.promo`] - Promotes or demotes nestable items within Neorg files. 
+  - {:TOC:}[`core.qol.toc`] - Generates a table of contents for a given Norg buffer. 
+  - {:Todo-Items:}[`core.qol.todo_items`] - Module for implementing todo lists. 
+  - {:Queries-Module:}[`core.queries.native`] - TS wrapper in order to fetch nodes using a custom table. 
+  - {:Summary:}[`core.summary`] - Creates links to all files in any workspace. 
+  - {:Syntax:}[`core.syntax`] - Handles interaction for syntax files for code blocks. 
+  - {:Tangling:}[`core.tangle`] - An Advanced Code Block Exporter. 
+  - {:Norg-Text-Objects:}[`core.text-objects`] - A Neorg module for moving and selecting elements of the document. 
+  - {:Todo-Introspector:}[`core.todo-introspector`] - Module for displaying progress of completed subtasks in the virtual line. 
+

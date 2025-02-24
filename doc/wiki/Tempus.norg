@@ -1,0 +1,15 @@
+
+* `core.tempus`
+
+*** Hassle-Free Dates
+
+* Overview
+
+  `core.tempus` is an internal module specifically designed
+  to handle complex dates. It exposes two functions: `parse_date(string) -> date|string`
+  and `to_lua_date(date) -> osdate`. 
+
+* Configuration
+
+  This module provides no configuration options! 
+

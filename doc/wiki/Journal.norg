@@ -1,0 +1,76 @@
+
+* `core.journal`
+
+*** Dear diary…
+
+    The journal module allows you to take personal notes with zero friction. 
+
+* Overview
+
+  The journal module exposes a total of six commands.
+  The first three, `:Neorg journal today|yesterday|tomorrow`, allow you to access entries
+  for a given time relative to today. A file will be opened with the respective date as a `.norg` file. 
+
+  The fourth command, `:Neorg journal custom`, allows you to specify a custom date as an argument.
+  The date must be formatted according to the `YYYY-mm-dd` format, e.g. `2023-01-01`. 
+
+  The `:Neorg journal template` command creates a template file which will be used as the base whenever
+  a new journal entry is created. 
+
+  Last but not least, the `:Neorg journal toc open|update` commands open or create/update a Table of Contents
+  file found in the root of the journal. This file contains links to all other journal entries, alongside
+  their titles. 
+
+* Configuration
+
+** journal_folder (string)
+
+   The name for the folder in which the journal files are put. 
+
+   default: `"journal"` 
+
+** strategy (string)
+
+   The strategy to use to create directories.
+   May be "flat" (`2022-03-02.norg`), "nested" (`2022/03/02.norg`),
+   a lua string with the format given to `os.date()` or a lua function
+   that returns a lua string with the same format. 
+
+   default: `"nested"` 
+
+** template_name (string)
+
+   The name of the template file to use when running `:Neorg journal template`. 
+
+   default: `"template.norg"` 
+
+** toc_format (nil)
+
+   Formatter function used to generate the toc file.
+   Receives a table that contains tables like { yy, mm, dd, link, title }. 
+
+   The function must return a table of strings. 
+
+   default: `nil` 
+
+** use_template (boolean)
+
+   Whether to apply the template file to new journal entries. 
+
+   default: `true` 
+
+** workspace (nil)
+
+   Which workspace to use for the journal files, the default behaviour
+   is to use the current workspace. 
+
+   It is recommended to set this to a static workspace, but the most optimal
+   behaviour may vary from workflow to workflow. 
+
+   default: `nil` 
+
+* Dependencies
+
+  - {:Dirman:}[`core.dirman`] - This module is be responsible for managing directories full of .norg files. 
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

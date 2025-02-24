@@ -1,0 +1,22 @@
+
+* `core.queries.native`
+
+*** Queries Made Easy
+
+* Overview
+
+  The `core.queries.native` module provides useful Treesitter wrappers
+  to query information from Norg documents. 
+
+* Configuration
+
+  This module provides no configuration options! 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+
+* Required By
+
+  - {:Core-Presenter:}[`core.presenter`] - Neorg module to create gorgeous presentation slides. 
+

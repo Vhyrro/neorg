@@ -1,0 +1,43 @@
+
+* `core.completion`
+
+*** Get completions in Neorg files
+
+* Overview
+
+  This module is an intermediary between Neorg and the completion engine of your choice. After setting up this
+  module (this usually just involves setting the `engine` field in the {# configuration} section),
+  please read the corresponding wiki page for the engine you selected ({:Nvim-Cmp:}[`nvim-cmp`]
+  {@core.integrations.coq_nvim}[`coq_nvim`] or {:Nvim-Compe:}[`nvim-compe`]) to complete setup. 
+
+  Completions are provided in the following cases (examples in (), `|||` represents the cursor location):
+  - TODO items (`|- (||`)
+  - @ tags (`|@||`)
+  - # tags (`|#||`)
+  - file path links (`|{:||`) provides workspace relative paths (`:$/workspace/relative/path:`)
+  - header links (`|{*||`)
+  - fuzzy header links (`|{#||`)
+  - footnotes (`|{^||`)
+  - file path + header links (`|{:path:*||`)
+  - file path + fuzzy header links (`|{:path:#||`)
+  - file path + footnotes (`|{:path:^||`)
+  - anchor names (`|[||`)
+  - link names (`|{<somelink>}[||`) 
+
+  Header completions will show only valid headers at the current level in the current or specified file. All
+  link completions are smart about closing `:` and `}`. 
+
+* Configuration
+
+** name (string)
+
+   The identifier for the Neorg source. 
+
+   default: `"[Neorg]"` 
+
+* Dependencies
+
+  - {:Dirman:}[`core.dirman`] - This module is be responsible for managing directories full of .norg files. 
+  - {:Dirman-Utils:}[`core.dirman.utils`] - A set of utilities for the `core.dirman` module. 
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

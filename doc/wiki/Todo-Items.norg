@@ -1,0 +1,103 @@
+
+* `core.qol.todo_items`
+
+*** Todo Item Swiss Army Knife
+
+* Overview
+
+  This module handles the whole concept of toggling TODO items, as well as updating
+  parent and/or children items alongside the current item. 
+
+  The following keybinds are exposed:
+  - `<Plug>(neorg.qol.todo-items.todo.task-done)` (`<LocalLeader>td`)
+  - `<Plug>(neorg.qol.todo-items.todo.task-undone)` (`<LocalLeader>tu`)
+  - `<Plug>(neorg.qol.todo-items.todo.task-pending)` (`<LocalLeader>tp`)
+  - `<Plug>(neorg.qol.todo-items.todo.task-on_hold)` (`<LocalLeader>th`)
+  - `<Plug>(neorg.qol.todo-items.todo.task-cancelled)` (`<LocalLeader>tc`)
+  - `<Plug>(neorg.qol.todo-items.todo.task-recurring)` (`<LocalLeader>tr`)
+  - `<Plug>(neorg.qol.todo-items.todo.task-important)` (`<LocalLeader>ti`)
+  - `<Plug>(neorg.qol.todo-items.todo.task-cycle)` (`<C-Space>`)
+  - `<Plug>(neorg.qol.todo-items.todo.task-cycle-reverse)` (no default keybind) 
+
+  With your cursor on a line that contains an item with a TODO attribute, press
+  any of the above keys to toggle the state of that particular item.
+  Parent items of the same type and children items of the same type are update accordingly. 
+
+* Configuration
+
+** create_todo_items (boolean)
+
+   When `true`, will automatically create a TODO extension for an item
+   if it does not exist and an operation is performed on that item. 
+
+   Given the following example: 
+
+   default: `- Test Item` 
+
+   With this option set to true, performing an operation (like pressing `<C-space>`
+   or what have you) will convert the non-todo item into one: 
+
+   default: `- ( ) Test Item` 
+
+   default: `true` 
+
+** create_todo_parents (boolean)
+
+   When set to `true`, will automatically convert parent
+   items to TODOs whenever a child item’s TODO state is updated. 
+
+   For instance, given the following example: 
+
+   |example
+   - Text
+   -- \( ) Child text
+   |end
+
+   When this option is `true` and the child’s state is updated to e.g.
+   `(x)` via the `<LocaLeader>td` keybind, the new output becomes: 
+
+   |example
+   - \(x) Text
+   -- \(x) Child text
+   |end
+
+   default: `false` 
+
+** order (list)
+
+   The default order of TODO item cycling when cycling via
+   `<C-Space>`. 
+
+   Defaults to the following order: `undone`, `done`, `pending`. 
+
+   - \(list)  
+   -- \(string)  default: `"undone"` 
+   -- \(string)  default: `" "` 
+   - \(list)  
+   -- \(string)  default: `"done"` 
+   -- \(string)  default: `"x"` 
+   - \(list)  
+   -- \(string)  default: `"pending"` 
+   -- \(string)  default: `"-"` 
+
+** order_with_children (list)
+
+   The default order of TODO item cycling when the item
+   has nested children with TODO items. 
+
+   When cycling through TODO items with children it’s not
+   always sensible to follow the same schema as the `order` table. 
+
+   Defaults to the following order: `undone`, `done`. 
+
+   - \(list)  
+   -- \(string)  default: `"undone"` 
+   -- \(string)  default: `" "` 
+   - \(list)  
+   -- \(string)  default: `"done"` 
+   -- \(string)  default: `"x"` 
+
+* Dependencies
+
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

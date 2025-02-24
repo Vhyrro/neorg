@@ -1,0 +1,568 @@
+
+* `core.concealer`
+
+*** Display Markup as Icons, not Text
+
+    The concealer module converts verbose markup elements into beautified icons for your viewing pleasure. 
+
+* Overview
+
+  "Concealing" is the process of hiding away from plain sight. When writing raw Norg, long strings like
+  `***** Hello` or `$$ Definition` can be distracting and sometimes unpleasant when sifting through large notes. 
+
+  To reduce the amount of cognitive load required to "parse" Norg documents with your own eyes, this module
+  masks, or sometimes completely hides many categories of markup. 
+
+  The concealer depends on {https://github.com/ryanoasis/nerd-fonts/releases/latest}[Nerd Fonts >=v3.0.1] to be
+  installed on your system. 
+
+  This module respects `:h conceallevel` and `:h concealcursor`. Setting the wrong values for these options can
+  make it look like this module isn’t working. 
+
+* Configuration
+
+** folds (boolean)
+
+   If true, Neorg will enable folding by default for `.norg` documents.
+   You may use the inbuilt Neovim folding options like `foldnestmax`,
+   `foldlevelstart` and others to then tune the behaviour to your liking. 
+
+   Set to `false` if you do not want Neorg setting anything. 
+
+   default: `true` 
+
+** icon_preset (string)
+
+   Which icon preset to use. 
+
+   The currently available icon presets are: 
+
+   - "basic" - use a mixture of icons (includes cute flower icons!) 
+   - "diamond" - use diamond shapes for headings 
+   - "varied" - use a mix of round and diamond shapes for headings; no cute flower icons though :( 
+
+   default: `"basic"` 
+
+** icons (table)
+
+   Configuration for icons. 
+
+   This table contains the full configuration set for each icon, including
+   its query (where to be placed), render functions (how to be placed) and
+   characters to use. 
+
+   For most use cases, the only values that you should be changing is the `icon`/`icons` field.
+   `icon` is a string, while `icons` is a table of strings for multilevel elements like
+   headings, lists, and quotes. 
+
+   To disable part of the config, replace the table with `false`, or prepend `false and` to it.
+   For example: `done = false` or `done = false and { ... \}`. 
+
+*** code_block (table)
+
+    Options that control the behaviour of code block dimming
+    (placing a darker background behind `@code` tags). 
+
+**** conceal (boolean)
+
+     If `true` will conceal (hide) the `@code` and `@end` portion of the code
+     block. 
+
+     default: `false` 
+
+**** content_only (boolean)
+
+     If true will only dim the content of the code block (without the
+     `@code` and `@end` lines), not the entirety of the code block itself. 
+
+     default: `true` 
+
+**** highlight (string)
+
+     default: `"@neorg.tags.ranged_verbatim.code_block"` 
+
+**** insert_enabled (boolean)
+
+     default: `true` 
+
+**** nodes (list)
+
+     - \(string)  default: `"ranged_verbatim_tag"` 
+
+**** padding (table)
+
+     Additional padding to apply to either the left or the right. Making
+     these values negative is considered undefined behaviour (it is
+     likely to work, but it’s not officially supported). 
+
+***** left (number)
+
+      default: `0` 
+
+***** right (number)
+
+      default: `0` 
+
+**** render (function)
+
+     default: `module.public.icon_renderers.render_code_block` 
+
+**** spell_check (boolean)
+
+     If `false` will disable spell check on code blocks when 'spell' option is switched on. 
+
+     default: `true` 
+
+**** width (string)
+
+     The width to use for code block backgrounds. 
+
+     When set to `fullwidth` (the default), will create a background
+     that spans the width of the buffer. 
+
+     When set to `content`, will only span as far as the longest line
+     within the code block. 
+
+     default: `"fullwidth"` 
+
+*** definition (table)
+
+**** multi_prefix (table)
+
+***** icon (string)
+
+      default: `"⋙ "` 
+
+***** nodes (list)
+
+      - \(string)  default: `"multi_definition_prefix"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** multi_suffix (table)
+
+***** icon (string)
+
+      default: `"⋘ "` 
+
+***** nodes (list)
+
+      - \(string)  default: `"multi_definition_suffix"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** single (table)
+
+***** icon (string)
+
+      default: `"≡"` 
+
+***** nodes (table)
+
+      - \(string)  default: `"single_definition_prefix"` 
+      - concealed  (list)  
+      -- \(string)  default: `"link_target_definition"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+*** delimiter (table)
+
+**** horizontal_line (table)
+
+***** highlight (string)
+
+      default: `"@neorg.delimiters.horizontal_line"` 
+
+***** icon (string)
+
+      default: `"─"` 
+
+***** left (string)
+      The starting position of horizontal lines: 
+
+      - "window": the horizontal line starts from the first column, reaching the left of the window 
+      - "here": the horizontal line starts from the node column 
+
+      default: `"here"` 
+
+***** nodes (list)
+
+      - \(string)  default: `"horizontal_line"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.render_horizontal_line` 
+
+***** right (string)
+      The ending position of horizontal lines: 
+
+      - "window": the horizontal line ends at the last column, reaching the right of the window 
+      - "textwidth": the horizontal line ends at column `textwidth` or 79 when it’s set to zero 
+
+      default: `"window"` 
+
+**** strong (table)
+
+***** highlight (string)
+
+      default: `"@neorg.delimiters.strong"` 
+
+***** icon (string)
+
+      default: `"⟪"` 
+
+***** nodes (list)
+
+      - \(string)  default: `"strong_paragraph_delimiter"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.fill_text` 
+
+**** weak (table)
+
+***** highlight (string)
+
+      default: `"@neorg.delimiters.weak"` 
+
+***** icon (string)
+
+      default: `"⟨"` 
+
+***** nodes (list)
+
+      - \(string)  default: `"weak_paragraph_delimiter"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.fill_text` 
+
+*** footnote (table)
+
+**** multi_prefix (table)
+
+***** icon (string)
+
+      default: `"⁑ "` 
+
+***** nodes (list)
+
+      - \(string)  default: `"multi_footnote_prefix"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** multi_suffix (table)
+
+***** icon (string)
+
+      default: `"⁑ "` 
+
+***** nodes (list)
+
+      - \(string)  default: `"multi_footnote_suffix"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** single (table)
+
+***** icon (string)
+
+      default: `"⁎"` 
+
+***** nodes (table)
+
+      - \(string)  default: `"single_footnote_prefix"` 
+      - concealed  (list)  
+      -- \(string)  default: `"link_target_footnote"` 
+
+***** numeric_superscript (boolean)
+
+      When set to true, footnote link with numeric title will be
+      concealed to superscripts. 
+
+      default: `true` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+***** render_concealed (function)
+
+      default: `module.public.icon_renderers.footnote_concealed` 
+
+***** title_highlight (string)
+
+      default: `"@neorg.footnotes.title"` 
+
+*** heading (table)
+
+**** highlights (list)
+
+     - \(string)  default: `"@neorg.headings.1.prefix"` 
+     - \(string)  default: `"@neorg.headings.2.prefix"` 
+     - \(string)  default: `"@neorg.headings.3.prefix"` 
+     - \(string)  default: `"@neorg.headings.4.prefix"` 
+     - \(string)  default: `"@neorg.headings.5.prefix"` 
+     - \(string)  default: `"@neorg.headings.6.prefix"` 
+
+**** icons (list)
+
+     - \(string)  default: `"◉"` 
+     - \(string)  default: `"◎"` 
+     - \(string)  default: `"○"` 
+     - \(string)  default: `"✺"` 
+     - \(string)  default: `"▶"` 
+     - \(string)  default: `"⤷"` 
+
+**** nodes (table)
+
+     - \(string)  default: `"heading1_prefix"` 
+     - \(string)  default: `"heading2_prefix"` 
+     - \(string)  default: `"heading3_prefix"` 
+     - \(string)  default: `"heading4_prefix"` 
+     - \(string)  default: `"heading5_prefix"` 
+     - \(string)  default: `"heading6_prefix"` 
+     - concealed  (list)  
+     -- \(string)  default: `"link_target_heading1"` 
+     -- \(string)  default: `"link_target_heading2"` 
+     -- \(string)  default: `"link_target_heading3"` 
+     -- \(string)  default: `"link_target_heading4"` 
+     -- \(string)  default: `"link_target_heading5"` 
+     -- \(string)  default: `"link_target_heading6"` 
+
+**** render (function)
+
+     default: `module.public.icon_renderers.multilevel_on_right(false)` 
+
+*** list (table)
+
+**** icons (list)
+
+     - \(string)  default: `"•"` 
+
+**** nodes (list)
+
+     - \(string)  default: `"unordered_list1_prefix"` 
+     - \(string)  default: `"unordered_list2_prefix"` 
+     - \(string)  default: `"unordered_list3_prefix"` 
+     - \(string)  default: `"unordered_list4_prefix"` 
+     - \(string)  default: `"unordered_list5_prefix"` 
+     - \(string)  default: `"unordered_list6_prefix"` 
+
+**** render (function)
+
+     default: `module.public.icon_renderers.multilevel_on_right(false)` 
+
+*** markup (table)
+
+**** spoiler (table)
+
+***** highlight (string)
+
+      default: `"@neorg.markup.spoiler"` 
+
+***** icon (string)
+
+      default: `"•"` 
+
+***** nodes (list)
+
+      - \(string)  default: `"spoiler"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.fill_multiline_chop2` 
+
+*** ordered (table)
+
+**** icons (list)
+
+     - \(string)  default: `"1."` 
+     - \(string)  default: `"A."` 
+     - \(string)  default: `"a."` 
+     - \(string)  default: `"(1)"` 
+     - \(string)  default: `"I."` 
+     - \(string)  default: `"i."` 
+
+**** nodes (list)
+
+     - \(string)  default: `"ordered_list1_prefix"` 
+     - \(string)  default: `"ordered_list2_prefix"` 
+     - \(string)  default: `"ordered_list3_prefix"` 
+     - \(string)  default: `"ordered_list4_prefix"` 
+     - \(string)  default: `"ordered_list5_prefix"` 
+     - \(string)  default: `"ordered_list6_prefix"` 
+
+**** render (function)
+
+     default: `module.public.icon_renderers.multilevel_on_right(true)` 
+
+*** quote (table)
+
+**** clear (function)
+
+     default: `module.public.icon_removers.quote` 
+
+**** highlights (list)
+
+     - \(string)  default: `"@neorg.quotes.1.prefix"` 
+     - \(string)  default: `"@neorg.quotes.2.prefix"` 
+     - \(string)  default: `"@neorg.quotes.3.prefix"` 
+     - \(string)  default: `"@neorg.quotes.4.prefix"` 
+     - \(string)  default: `"@neorg.quotes.5.prefix"` 
+     - \(string)  default: `"@neorg.quotes.6.prefix"` 
+
+**** icons (list)
+
+     - \(string)  default: `"│"` 
+
+**** nodes (list)
+
+     - \(string)  default: `"quote1"` 
+     - \(string)  default: `"quote2"` 
+     - \(string)  default: `"quote3"` 
+     - \(string)  default: `"quote4"` 
+     - \(string)  default: `"quote5"` 
+     - \(string)  default: `"quote6"` 
+
+**** render (function)
+
+     default: `module.public.icon_renderers.quote_concealed` 
+
+*** todo (table)
+
+**** cancelled (table)
+
+***** icon (string)
+
+      default: `""` 
+
+***** nodes (list)
+
+      - \(string)  default: `"todo_item_cancelled"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** done (table)
+
+***** icon (string)
+
+      default: `"󰄬"` 
+
+***** nodes (list)
+
+      - \(string)  default: `"todo_item_done"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** on_hold (table)
+
+***** icon (string)
+
+      default: `""` 
+
+***** nodes (list)
+
+      - \(string)  default: `"todo_item_on_hold"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** pending (table)
+
+***** icon (string)
+
+      default: `"󰥔"` 
+
+***** nodes (list)
+
+      - \(string)  default: `"todo_item_pending"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** recurring (table)
+
+***** icon (string)
+
+      default: `"↺"` 
+
+***** nodes (list)
+
+      - \(string)  default: `"todo_item_recurring"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** uncertain (table)
+
+***** icon (string)
+
+      default: `""` 
+
+***** nodes (list)
+
+      - \(string)  default: `"todo_item_uncertain"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** undone (table)
+
+***** icon (string)
+
+      default: `"×"` 
+
+***** nodes (list)
+
+      - \(string)  default: `"todo_item_undone"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+**** urgent (table)
+
+***** icon (string)
+
+      default: `"⚠"` 
+
+***** nodes (list)
+
+      - \(string)  default: `"todo_item_urgent"` 
+
+***** render (function)
+
+      default: `module.public.icon_renderers.on_left` 
+
+** init_open_folds (string)
+
+   When set to `auto`, Neorg will open all folds when opening new documents if `foldlevel` is 0.
+   When set to `always`, Neorg will always open all folds when opening new documents.
+   When set to `never`, Neorg will not do anything. 
+
+   default: `"auto"` 
+
+* Dependencies
+
+  - {:Autocommands:}[`core.autocommands`] - Handles the creation and management of Neovim’s autocommands. 
+  - {:Treesitter-Integration:}[`core.integrations.treesitter`] - A module designed to integrate Treesitter into Neorg. 
+

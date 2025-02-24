@@ -1,0 +1,20 @@
+
+* `core.clipboard.code-blocks`
+
+*** Comfortable Code Copying in Neorg
+
+* Overview
+
+  The `code-blocks` module removes leading whitespace when copying from an `@code` tag, allowing
+  for easy pasting into external applications. 
+
+  To use it, simply highlight some code within an `@code` block and paste it elsewhere!
+  This functionality will *only* work if the selection is inside the `@code` section,
+  excluding the `@code` and `@end` portion itself. 
+
+  If the conditions are not met, the content is copied normally, preserving all indentation. 
+
+* Configuration
+
+  This module provides no configuration options! 
+

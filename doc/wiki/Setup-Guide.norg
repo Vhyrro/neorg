@@ -1,0 +1,131 @@
+
+* Setting up Neorg
+
+  A guide on configuring Neorg. 
+
+  > [!NOTE]
+    If you’re just getting started and have no idea why and where to use Neorg,
+    feel free to check out the {:Tutorial:}[tutorial]. 
+
+** Where do I begin?
+
+   Neorg, being a large organizational tool for many different types of people, needs to be
+   extensible and highly configurable. It’s for this reason that setting it up takes slightly
+   longer than your average Neovim plugin. 
+
+   Because of this, learning to navigate the Neorg wiki as well as learning the basics of how the system
+   works will get you a very long way in making Neorg your own. 
+
+   This guide assumes that you’ve completed the initial {https://github.com/nvim-neorg/neorg?tab=readme-ov-file#-installation}[setup process] successfully and without errors. 
+
+** Default Setup
+
+   The default configuration looks like follows: 
+
+   default: `require("neorg").setup()` 
+
+   This code initializes Neorg with the /default options/. In practice it’s equivalent to the following: 
+
+   @code lua
+   require("neorg").setup({
+       load = {
+           ["core.defaults"] = {},
+       }
+   })
+   @end
+
+   This immediately introduces you to an important concept: *modules*. 
+
+   The entire core of Neorg is modular, that is, all functionality is isolated into bits
+   of code. Every module has its own configuration options, its own behaviours,
+   its own keymaps, etc. 
+
+   `core.defaults` is a special type of module called a metamodule - it acts as a quick way to load a bunch of other modules
+   at once. If you’d like to see what sort of modules `core.defaults` loads, check out {https://github.com/nvim-neorg/neorg/wiki#default-modules}[this wiki entry]. 
+
+** Configuring Parts of Neorg
+
+   By default, Neorg comes with the bare experience. It loads modules that are critical for Neorg to function
+   properly. This workflow is mainly tailored for people who use Neorg to write documentation in the Norg file format, but nothing more than that. 
+
+   If you’re using Neorg to write notes or to perform time-tracking tasks you may want to load /extra modules/
+   that provide more functionality than the default. 
+
+   These extra modules are listed {https://github.com/nvim-neorg/neorg/wiki#other-modules}[in a separate heading in the wiki]. Feel free to check some of them out!
+   They all have documentation and their behaviours are explained. 
+
+** Loading New Modules
+
+   The most common module people set up is the concealer module - it converts our
+   notes from regular plaintext to beautified plaintext thanks to its use of
+   icons. If you click on the module name in the wiki, it’ll take you to {:Concealer:}[this
+   page]. 
+
+   To load the module, we use the full path of the module (in this case `core.concealer`).
+   Let’s adapt our configuration: 
+
+   @code lua
+   require("neorg").setup({
+       load = {
+           ["core.defaults"] = {},
+           ["core.concealer"] = {}, -- We added this line!
+       }
+   })
+   @end
+
+   If you restart Neovim and enter a `test.norg` file with the following content: 
+
+   default: `* Hello from Neorg!` 
+
+   You should see that the heading has a nice icon! 
+
+   A decent chunk of modules require no configuration and work out of the box. Feel free to try as
+   many as you like! 
+
+*** Dependence on Neovim Options
+
+    If you carefully read the {https://github.com/nvim-neorg/neorg/wiki/Concealer#overview}[overview page for the concealer],
+    you’ll notice that the concealer respects the Neovim `conceallevel` and `concealcursor` options. 
+
+    If possible, Neorg will not mess with your Neovim options. Check out the help pages for both options
+    and tweak them as you see fit. For example, `vim.opt.conceallevel = 3` will cause many elements of the document
+    like the asterisks around `*bold*` words to disappear! 
+
+** Configuring Individual Modules
+
+   If you had read onwards in the concealer’s page you may have noticed a {https://github.com/nvim-neorg/neorg/wiki/Concealer#configuration}[configuration section].
+   This section details all of the possible configuration options as well as their descriptions. Click around and see what you can find! 
+
+   Continuing with our concealer example, let’s say we wanted to change the `icon_preset` setting.
+   The documentation tells us this option is a string, and that its default value is `"basic"`. 
+
+   To configure the module, let’s extend our configuration code: 
+
+   @code lua
+   require("neorg").setup({
+       load = {
+           ["core.defaults"] = {},
+           ["core.concealer"] = {
+               config = { -- We added a `config` table!
+                   icon_preset = "varied", -- And we set our option here.
+               },
+           },
+       }
+   })
+   @end
+
+   Notice that, to configure a module, we first provide a `config` table, and then all of our configuration inside! 
+
+   If you save, quit and re-enter Neovim, the concealer should now use a completely different set of icons than it did before! 
+
+** Running `:checkhealth` to Find Mistakes
+
+   If you find something that isn’t behaving as intended feel free to run `:checkhealth neorg` - this will open up a window with a set of checkboxes (or crosses if there were errors). 
+
+   The builtin checkhealth ensures that your configuration is "clean" - that means that there are no errors or mistakes on your end. If something is wrong (e.g. you forgot to wrap your
+   module configuration in a `config = {}` block) then the health check will issue a warning or error with detailed instructions on how to fix the issue :) 
+
+** That’s it!
+
+   These are the most critical things that you need to know to get started with configuring Neorg. If you would like to understand /how/ to start using Neorg, check out the {:Tutorial:}[tutorial]! 
+
