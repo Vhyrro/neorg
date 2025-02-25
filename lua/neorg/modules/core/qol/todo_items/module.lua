@@ -92,6 +92,20 @@ module.config.public = {
     -- ```
     create_todo_parents = false,
 
+    -- Automatically update the parent todo state when a child node is updated.
+    --
+    -- eg:
+    -- ```norg
+    -- - ( ) parent
+    -- -- ( ) child
+    -- ```
+    -- Marking `-- ( ) child` as done (with a keybind) will result in:
+    -- ```norg
+    -- - (-) parent
+    -- -- (x) child
+    -- ```
+    update_todo_parents = true,
+
     -- When `true`, will automatically create a TODO extension for an item
     -- if it does not exist and an operation is performed on that item.
     --
@@ -346,6 +360,7 @@ module.private = {
 
         local first_status_extension = module.private.find_first_status_extension(node:named_child(1)) ---@diagnostic disable-line -- TODO: type error workaround <pysan3>
 
+        local parent_line
         if not first_status_extension then
             if not module.config.public.create_todo_items then
                 return
@@ -354,8 +369,10 @@ module.private = {
             local row, _, _, column = node:named_child(0):range() ---@diagnostic disable-line -- TODO: type error workaround <pysan3>
 
             vim.api.nvim_buf_set_text(buf, row, column, row, column, { "(" .. char .. ") " })
+            parent_line = row
         else
             local range = module.required["core.integrations.treesitter"].get_node_range(first_status_extension)
+            parent_line = range.row_start
 
             module.private.fire_update_event(char, range.row_start)
 
@@ -367,6 +384,10 @@ module.private = {
                 range.column_end,
                 { char }
             )
+        end
+
+        if module.config.public.update_todo_parents then
+            module.private.update_parent(buf, parent_line, 0)
         end
 
         for child in node:iter_children() do ---@diagnostic disable-line -- TODO: type error workaround <pysan3>
