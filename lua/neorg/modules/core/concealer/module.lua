@@ -405,7 +405,7 @@ local function format_ordered_icon(pattern, index)
         return gen(index)
     end
 
-    for char_one, number_table in pairs(ordered_icon_table) do
+    for char_one, number_table in pairs(module.config.public.ordered_icons) do
         local l, r = pattern:find(char_one:find("%w") and "%f[%w]" .. char_one .. "%f[%W]" or char_one)
         if l then
             gen = function(index_)
@@ -683,6 +683,12 @@ module.config.public = {
     -- When set to `always`, Neorg will always open all folds when opening new documents.
     -- When set to `never`, Neorg will not do anything.
     init_open_folds = "auto",
+
+    -- Provide custom ordered icons for ordered lists.
+    -- - keys are a string matched against the first character of the values in `icons.ordered.icons`
+    -- - value are either a list of string icons to use (one for each index), or a function that
+    --   takes the index and returns the string value
+    ordered_icons = ordered_icon_table,
 
     -- Configuration for icons.
     --
