@@ -368,10 +368,10 @@ module.config.public = {
             escape = "+@type",
         },
 
-        -- Rendered Latex, this will dictate the foreground color of latex images rendered via
-        -- core.latex.renderer
+        -- Rendered Latex, this will dictate the foreground color of math images rendered via
+        -- core.math.renderer
         rendered = {
-            latex = "+Normal",
+            math = "+Normal",
         },
     },
 
