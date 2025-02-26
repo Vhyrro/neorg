@@ -147,16 +147,16 @@ module.config.public = {
         norg = {
             url = "https://github.com/nvim-neorg/tree-sitter-norg",
             files = { "src/parser.c", "src/scanner.cc" },
-            branch = "main",
             revision = "6348056b999f06c2c7f43bb0a5aa7cfde5302712",
+            use_makefile = true,
         },
         -- Configuration for the metadata parser (used to parse the contents
         -- of `@document.meta` blocks).
         norg_meta = {
             url = "https://github.com/nvim-neorg/tree-sitter-norg-meta",
             files = { "src/parser.c" },
-            branch = "main",
             revision = "a479d1ca05848d0b51dd25bc9f71a17e0108b240",
+            use_makefile = true,
         },
     },
 }
@@ -927,57 +927,10 @@ module.public = {
     end,
 }
 
--- this fixes the problem of installing neorg ts parsers on macOS without resorting to using gcc
-local function install_norg_ts()
-    local install = require("nvim-treesitter.install")
-
-    if vim.fn.has("macunix") == 1 then
-        -- https://github.com/nvim-neorg/tree-sitter-norg/issues/7
-        -- (we have to force clang to c++11 mode on macOS manually)
-
-        local shell = require("nvim-treesitter.shell_command_selectors")
-
-        -- save the original functions
-        local select_executable = shell.select_executable
-        local compilers = install.compilers
-
-        -- temporarily patch treesitter install logic
-        local cc = "clang++ -std=c++11"
-        ---@diagnostic disable-next-line: duplicate-set-field
-        shell.select_executable = function(executables)
-            return vim.tbl_filter(function(c) ---@param c string
-                return c ~= vim.NIL and (vim.fn.executable(c) == 1 or c == cc)
-            end, executables)[1]
-        end
-        install.compilers = { cc }
-
-        -- install norg parsers
-        local ok, err = pcall(function()
-            install.commands.TSInstallSync["run!"]("norg")
-        end)
-
-        -- no matter what, restore the defaults back
-        shell.select_executable = select_executable
-        install.compilers = compilers
-
-        -- if an error occurred during install, propagate it up
-        if not ok then
-            error(err)
-        end
-    else
-        install.commands.TSInstallSync["run!"]("norg")
-    end
-end
-
 module.on_event = function(event)
     if event.split_type[2] == "sync-parsers" then
-        local ok, err = pcall(install_norg_ts)
-
-        if not ok then
-            utils.notify(string.format([[Unable to auto-install Norg parser: %s]], err), vim.log.levels.WARN)
-        end
-
         local install = require("nvim-treesitter.install")
+        install.commands.TSInstallSync["run!"]("norg")
         install.commands.TSInstallSync["run!"]("norg_meta")
     end
 end
